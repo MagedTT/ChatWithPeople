@@ -19,6 +19,8 @@ public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, 
     public DbSet<Message> Messages { get; set; }
     public DbSet<MessageRead> MessageReads { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<Interest> Interests { get; set; }
+    public DbSet<UserInterest> UserInterests { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

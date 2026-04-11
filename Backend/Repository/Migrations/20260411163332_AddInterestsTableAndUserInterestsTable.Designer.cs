@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260411163332_AddInterestsTableAndUserInterestsTable")]
+    partial class AddInterestsTableAndUserInterestsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +46,7 @@ namespace Repository.Migrations
                         .IsUnique()
                         .HasFilter("[GroupId] IS NOT NULL");
 
-                    b.ToTable("Conversations", (string)null);
+                    b.ToTable("Conversations");
                 });
 
             modelBuilder.Entity("Entities.Models.ConversationParticipant", b =>
@@ -65,7 +68,7 @@ namespace Repository.Migrations
                     b.HasIndex("ConversationId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("ConversationParticipants", (string)null);
+                    b.ToTable("ConversationParticipants");
                 });
 
             modelBuilder.Entity("Entities.Models.FriendRequest", b =>
@@ -92,7 +95,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("FriendRequests", (string)null);
+                    b.ToTable("FriendRequests");
                 });
 
             modelBuilder.Entity("Entities.Models.Friendship", b =>
@@ -117,7 +120,7 @@ namespace Repository.Migrations
                     b.HasIndex("User1Id", "User2Id")
                         .IsUnique();
 
-                    b.ToTable("Friendships", (string)null);
+                    b.ToTable("Friendships");
                 });
 
             modelBuilder.Entity("Entities.Models.Group", b =>
@@ -151,7 +154,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("CreatedByUserId");
 
-                    b.ToTable("Groups", (string)null);
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("Entities.Models.GroupInvite", b =>
@@ -183,7 +186,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("InvitedUserId");
 
-                    b.ToTable("GroupInvites", (string)null);
+                    b.ToTable("GroupInvites");
                 });
 
             modelBuilder.Entity("Entities.Models.GroupJoinRequest", b =>
@@ -210,7 +213,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GroupJoinRequests", (string)null);
+                    b.ToTable("GroupJoinRequests");
                 });
 
             modelBuilder.Entity("Entities.Models.GroupMember", b =>
@@ -238,7 +241,7 @@ namespace Repository.Migrations
                     b.HasIndex("GroupId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("GroupMembers", (string)null);
+                    b.ToTable("GroupMembers");
                 });
 
             modelBuilder.Entity("Entities.Models.Interest", b =>
@@ -253,7 +256,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Interests", (string)null);
+                    b.ToTable("Interests");
                 });
 
             modelBuilder.Entity("Entities.Models.Message", b =>
@@ -291,7 +294,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Entities.Models.MessageRead", b =>
@@ -316,7 +319,7 @@ namespace Repository.Migrations
                     b.HasIndex("MessageId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("MessageReads", (string)null);
+                    b.ToTable("MessageReads");
                 });
 
             modelBuilder.Entity("Entities.Models.Notification", b =>
@@ -349,7 +352,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("UserId", "IsRead");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -451,7 +454,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("InterestId");
 
-                    b.ToTable("UserInterests", (string)null);
+                    b.ToTable("UserInterests");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>

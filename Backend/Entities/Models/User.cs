@@ -11,6 +11,7 @@ public class User : IdentityUser<Guid>
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public bool IsDeleted { get; set; } = false;
     public DateTime? DeletedAt { get; set; }
+    public int Age { get; set; }
 
     public ICollection<Friendship> FriendshipsSent { get; set; } = default!;
     public ICollection<Friendship> FriendshipsReceived { get; set; } = default!;
@@ -28,4 +29,6 @@ public class User : IdentityUser<Guid>
     public ICollection<GroupInvite> GroupInvitesReceived { get; set; } = default!;
 
     public ICollection<Notification> Notifications { get; set; } = default!;
+
+    public ICollection<UserInterest> UserInterests { get; set; } = default!;
 }
