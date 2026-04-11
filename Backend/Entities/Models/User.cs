@@ -1,0 +1,29 @@
+using Entities.Enums;
+using Microsoft.AspNetCore.Identity;
+
+namespace Entities.Models;
+
+public class User : IdentityUser
+{
+    public UserStatus Status { get; set; }
+    public byte[]? ProfilePicture { get; set; }
+    public DateTime LastSeen { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+    public ICollection<Friendship> FriendshipsSent { get; set; } = default!;
+    public ICollection<Friendship> FriendshipsReceived { get; set; } = default!;
+    public ICollection<FriendRequest> SentFriendRequests { get; set; } = default!;
+    public ICollection<FriendRequest> ReceivedFriendRequests { get; set; } = default!;
+
+    public ICollection<Message> MessagesSent { get; set; } = default!;
+    public ICollection<MessageRead> MessagesRead { get; set; } = default!;
+    public ICollection<ConversationParticipant> ConversationParticipants { get; set; } = default!;
+
+    public ICollection<Group> GroupsCreated { get; set; } = default!;
+    public ICollection<GroupMember> GroupMemberships { get; set; } = default!;
+    public ICollection<GroupJoinRequest> GroupJoinRequests { get; set; } = default!;
+    public ICollection<GroupInvite> GroupInvitesSent { get; set; } = default!;
+    public ICollection<GroupInvite> GroupInvitesReceived { get; set; } = default!;
+
+    public ICollection<Notification> Notifications { get; set; } = default!;
+}
