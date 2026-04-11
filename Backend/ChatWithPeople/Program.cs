@@ -1,8 +1,16 @@
 using ChatWithPeople.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.Configure<ApiBehaviorOptions>(config =>
+{
+    config.SuppressModelStateInvalidFilter = true;
+});
+
+builder.Services.AddControllers(options => options.ReturnHttpNotAcceptable = true)
+    .AddApplicationPart(typeof(ChatWithPeople.Presentation.AssemblyReference).Assembly);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -17,6 +25,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
