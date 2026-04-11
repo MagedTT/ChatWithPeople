@@ -4,7 +4,7 @@ public class Group
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
     public Guid CreatedByUserId { get; set; }
     public User CreatedBy { get; set; } = default!;
     public bool IsPublic { get; set; } = true;

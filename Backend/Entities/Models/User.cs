@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Entities.Models;
 
-public class User : IdentityUser
+public class User : IdentityUser<Guid>
 {
     public UserStatus Status { get; set; }
     public byte[]? ProfilePicture { get; set; }
     public DateTime LastSeen { get; set; } = DateTime.Now;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public bool IsDeleted { get; set; } = false;
+    public DateTime? DeletedAt { get; set; }
 
     public ICollection<Friendship> FriendshipsSent { get; set; } = default!;
     public ICollection<Friendship> FriendshipsReceived { get; set; } = default!;
@@ -16,7 +18,7 @@ public class User : IdentityUser
     public ICollection<FriendRequest> ReceivedFriendRequests { get; set; } = default!;
 
     public ICollection<Message> MessagesSent { get; set; } = default!;
-    public ICollection<MessageRead> MessagesRead { get; set; } = default!;
+    public ICollection<MessageRead> MessageReads { get; set; } = default!;
     public ICollection<ConversationParticipant> ConversationParticipants { get; set; } = default!;
 
     public ICollection<Group> GroupsCreated { get; set; } = default!;
