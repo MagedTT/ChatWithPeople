@@ -12,6 +12,8 @@ public class User : IdentityUser<Guid>
     public bool IsDeleted { get; set; } = false;
     public DateTime? DeletedAt { get; set; }
     public int Age { get; set; }
+    public string? RefreshToken { get; set; }
+    public DateTime RefreshTokenExpiryTime { get; set; }
 
     public ICollection<Friendship> FriendshipsSent { get; set; } = default!;
     public ICollection<Friendship> FriendshipsReceived { get; set; } = default!;

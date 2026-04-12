@@ -1,3 +1,4 @@
+using ChatWithPeople;
 using ChatWithPeople.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,17 @@ builder.Services.AddControllers(options => options.ReturnHttpNotAcceptable = tru
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(options =>
+{
+    options.AddProfile<MappingProfile>();
+});
+
 builder.Services.ConfigureSQLConnection();
+builder.Services.ConfigureLoggerManager();
+builder.Services.ConfigureServiceManager();
+builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureIdentity();
+builder.Services.AddJwtConfiguration(builder.Configuration);
 
 var app = builder.Build();
 
