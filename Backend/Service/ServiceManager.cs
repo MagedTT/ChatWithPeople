@@ -11,6 +11,7 @@ namespace Service;
 public class ServiceManager : IServiceManager
 {
     private readonly Lazy<IAuthenticationService> _authenticationService;
+    private readonly Lazy<IUserService> _userService;
     public ServiceManager(UserManager<User> userManager,
         RoleManager<IdentityRole<Guid>> roleManager,
         IOptionsMonitor<JwtConfiguration> optionsMonitorJwtConfiguration,
@@ -19,6 +20,8 @@ public class ServiceManager : IServiceManager
         ILoggerManager loggerManager)
     {
         _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, roleManager, optionsMonitorJwtConfiguration, mapper, repositoryManager, loggerManager));
+        _userService = new Lazy<IUserService>(() => new UserService(repositoryManager, mapper, loggerManager));
     }
     public IAuthenticationService AuthenticationService => _authenticationService.Value;
+    public IUserService UserService => _userService.Value;
 }

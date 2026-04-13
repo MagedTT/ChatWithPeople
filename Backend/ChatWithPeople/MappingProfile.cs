@@ -10,5 +10,7 @@ public class MappingProfile : Profile
     {
         CreateMap<UserForRegisterationDto, User>()
             .ForMember(user => user.ProfilePicture, options => options.Ignore());
+
+        CreateMap<User, UserDto>();
     }
 }
