@@ -12,5 +12,7 @@ public class MappingProfile : Profile
             .ForMember(user => user.ProfilePicture, options => options.Ignore());
 
         CreateMap<User, UserDto>();
+
+        CreateMap<Friendship, FriendshipsDto>();
     }
 }

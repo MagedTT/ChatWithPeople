@@ -12,6 +12,7 @@ public class ServiceManager : IServiceManager
 {
     private readonly Lazy<IAuthenticationService> _authenticationService;
     private readonly Lazy<IUserService> _userService;
+    private readonly Lazy<IFriendshipsService> _friendshipsService;
     public ServiceManager(UserManager<User> userManager,
         RoleManager<IdentityRole<Guid>> roleManager,
         IOptionsMonitor<JwtConfiguration> optionsMonitorJwtConfiguration,
@@ -21,7 +22,10 @@ public class ServiceManager : IServiceManager
     {
         _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, roleManager, optionsMonitorJwtConfiguration, mapper, repositoryManager, loggerManager));
         _userService = new Lazy<IUserService>(() => new UserService(repositoryManager, mapper, loggerManager));
+        _friendshipsService = new Lazy<IFriendshipsService>(() => new FriendshipsService(userManager, mapper, repositoryManager, loggerManager));
     }
     public IAuthenticationService AuthenticationService => _authenticationService.Value;
     public IUserService UserService => _userService.Value;
+
+    public IFriendshipsService FriendshipsService => _friendshipsService.Value;
 }

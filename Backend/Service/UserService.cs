@@ -22,7 +22,7 @@ public class UserService : IUserService
 
     public async Task<(IEnumerable<UserDto> users, MetaData metaData)> GetAllUsersAsync(UserParameters userParameters, bool trackChanges)
     {
-        PagedList<User> usersWithMetaData = await _repositoryManager.UserRepository.GetAllUsersAsync(userParameters, trackChanges);
+        PagedList<User> usersWithMetaData = await _repositoryManager.UserRepository.GetAllUsersAsync(userParameters, trackChanges: trackChanges);
 
         IEnumerable<UserDto> userDtos = _mapper.Map<IEnumerable<UserDto>>(usersWithMetaData);
 

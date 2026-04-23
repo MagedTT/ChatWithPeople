@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DTOs;
 using Shared.RequestFeatures;
 
 namespace ChatWithPeople.Presentation.Controllers;
@@ -17,7 +18,7 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllUsers([FromQuery] UserParameters userParameters)
     {
-        (IEnumerable<Shared.DTOs.UserDto> users, MetaData metaData) = await _serviceManager.UserService.GetAllUsersAsync(userParameters, trackChanges: false);
+        (IEnumerable<UserDto> users, MetaData metaData) = await _serviceManager.UserService.GetAllUsersAsync(userParameters: userParameters, trackChanges: false);
 
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
 

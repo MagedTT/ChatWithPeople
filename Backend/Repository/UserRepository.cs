@@ -12,7 +12,7 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
         : base(context)
     { }
 
-    async Task<PagedList<User>> IUserRepository.GetAllUsersAsync(UserParameters userParameters, bool trackChanges)
+    public async Task<PagedList<User>> GetAllUsersAsync(UserParameters userParameters, bool trackChanges)
     {
         List<User> users =
             await FindAll(trackChanges)

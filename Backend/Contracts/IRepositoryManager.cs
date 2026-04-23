@@ -4,5 +4,6 @@ public interface IRepositoryManager
 {
     IUserRepository UserRepository { get; }
     IInterestsRepository InterestsRepository { get; }
+    IFriendshipsRepository FriendshipsRepository { get; }
     Task SaveAsync();
 }
