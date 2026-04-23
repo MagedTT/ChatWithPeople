@@ -17,14 +17,19 @@ public class FriendshipsController : ControllerBase
 
     [HttpGet]
     [Route("{userId:guid}")]
-    public async Task<IActionResult> GetFriendships(Guid userId, [FromBody] FriendshipsParameter friendshipsParameter)
+    public async Task<IActionResult> GetFriendships(Guid userId, [FromQuery] FriendshipsParameters friendshipsParameters)
     {
-        (IEnumerable<FriendshipsDto> friendshipsDtos, MetaData metaData) = await _serviceManager.FriendshipsService.GetAllFriendsByUser1IdAsync(userId, friendshipsParameter, trackChanges: false);
+        (IEnumerable<FriendshipsDto> friendshipsDtos, MetaData metaData) = await _serviceManager.FriendshipsService.GetAllFriendsByUserIdAsync(userId, friendshipsParameters, trackChanges: false);
 
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
 
         return Ok(friendshipsDtos);
     }
+
+    [HttpGet]
+    [Route("{userId:guid}/OnlineFriends")]
+    public async Task<IActionResult> GetOnlineFriends(Guid userId)
+        => Ok(await _serviceManager.FriendshipsService.GetFriendsWithMinimalInformationByUserIdAsync(userId, trackChanges: false));
 
     [HttpPost]
     [Route("{user1Id:guid}/{user2Id:guid}")]
@@ -39,7 +44,7 @@ public class FriendshipsController : ControllerBase
     [Route("{user1Id:guid}/{user2Id:guid}")]
     public async Task<IActionResult> DeleteFriendship(Guid user1Id, Guid user2Id)
     {
-        await _serviceManager.FriendshipsService.DeleteFriendshipByUser1Id(user1Id, user2Id, trackChanges: false);
+        await _serviceManager.FriendshipsService.DeleteFriendshipByUsersIds(user1Id, user2Id, trackChanges: false);
 
         return NoContent();
     }

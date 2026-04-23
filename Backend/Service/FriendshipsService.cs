@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using Contracts;
 using Entities.Exceptions;
@@ -30,11 +31,11 @@ public class FriendshipsService : IFriendshipsService
         _loggerManager = loggerManager;
     }
 
-    public async Task<(IEnumerable<FriendshipsDto> friendshipDtos, MetaData metaData)> GetAllFriendsByUser1IdAsync(Guid user1Id, FriendshipsParameter friendshipsParameter, bool trackChanges)
+    public async Task<(IEnumerable<FriendshipsDto> friendshipDtos, MetaData metaData)> GetAllFriendsByUserIdAsync(Guid userId, FriendshipsParameters friendshipsParameters, bool trackChanges)
     {
-        await CheckIfUserExistsAsync(user1Id);
+        await CheckIfUserExistsAsync(userId);
 
-        PagedList<Friendship> friendshipsWithMetaData = await _repositoryManager.FriendshipsRepository.GetAllFriendsByUser1IdAsync(user1Id, friendshipsParameter, trackChanges);
+        PagedList<Friendship> friendshipsWithMetaData = await _repositoryManager.FriendshipsRepository.GetAllFriendsByUserIdAsync(userId, friendshipsParameters, trackChanges);
 
         IEnumerable<FriendshipsDto> friendshipsDtos = _mapper.Map<IEnumerable<FriendshipsDto>>(friendshipsWithMetaData);
 
@@ -53,6 +54,8 @@ public class FriendshipsService : IFriendshipsService
         await CheckIfUserExistsAsync(user1Id);
         await CheckIfUserExistsAsync(user2Id);
 
+        (user1Id, user2Id) = OrderUsersIds(user1Id, user2Id);
+
         Friendship friendship = new Friendship
         {
             User1Id = user1Id,
@@ -65,7 +68,7 @@ public class FriendshipsService : IFriendshipsService
         await _repositoryManager.SaveAsync();
     }
 
-    public async Task DeleteFriendshipByUser1Id(Guid user1Id, Guid user2Id, bool trackChanges)
+    public async Task DeleteFriendshipByUsersIds(Guid user1Id, Guid user2Id, bool trackChanges)
     {
         await CheckIfUserExistsAsync(user1Id);
         await CheckIfUserExistsAsync(user2Id);
@@ -84,6 +87,8 @@ public class FriendshipsService : IFriendshipsService
 
     private async Task<Friendship> GetFriendshipByUser1IAnsUser2IdAndCheckIfItExists(Guid user1Id, Guid user2Id, bool trackChanges)
     {
+        (user1Id, user2Id) = OrderUsersIds(user1Id, user2Id);
+
         Friendship? friendship = await _repositoryManager.FriendshipsRepository.GetFriendshipByUser1IdAndUser2IdAsync(user1Id, user2Id, trackChanges);
 
         if (friendship is null)
@@ -91,4 +96,16 @@ public class FriendshipsService : IFriendshipsService
 
         return friendship;
     }
+
+    public async Task<IEnumerable<UserMinimalInformationDto>> GetFriendsWithMinimalInformationByUserIdAsync(Guid userId, bool trackChanges)
+    {
+        IEnumerable<Friendship> friendships = await _repositoryManager.FriendshipsRepository.GetFriendUsersMinimalInformation(userId, trackChanges);
+
+        IEnumerable<UserMinimalInformationDto> usersWithMinimalInformation = _mapper.Map<IEnumerable<UserMinimalInformationDto>>(friendships.SelectMany(x => new[] { x.User1, x.User2 })).DistinctBy(x => x.Id).Where(x => x.Id != userId);
+
+        return usersWithMinimalInformation;
+    }
+
+    private (Guid smallerUserId, Guid biggerUserId) OrderUsersIds(Guid user1Id, Guid user2Id)
+        => user1Id > user2Id ? (user2Id, user1Id) : (user1Id, user2Id);
 }

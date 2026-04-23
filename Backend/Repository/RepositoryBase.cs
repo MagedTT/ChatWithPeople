@@ -11,12 +11,12 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 
     public RepositoryBase(ApplicationDbContext context) => _context = context;
 
-    public IQueryable<T> FindAll(bool trackChanges)
+    public IQueryable<T> FindAll(bool trackChanges = false)
         => trackChanges ?
             _context.Set<T>() :
             _context.Set<T>().AsNoTracking();
 
-    public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges)
+    public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges = false)
         => trackChanges ?
         _context.Set<T>().Where(expression) :
         _context.Set<T>().Where(expression).AsNoTracking();

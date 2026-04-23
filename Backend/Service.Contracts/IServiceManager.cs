@@ -5,4 +5,5 @@ public interface IServiceManager
     IAuthenticationService AuthenticationService { get; }
     IUserService UserService { get; }
     IFriendshipsService FriendshipsService { get; }
+    IFriendRequestService FriendRequestService { get; }
 }

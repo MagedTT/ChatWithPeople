@@ -13,6 +13,10 @@ public class MappingProfile : Profile
 
         CreateMap<User, UserDto>();
 
+        CreateMap<User, UserMinimalInformationDto>();
+
         CreateMap<Friendship, FriendshipsDto>();
+
+        CreateMap<FriendRequest, FriendRequestDto>();
     }
 }

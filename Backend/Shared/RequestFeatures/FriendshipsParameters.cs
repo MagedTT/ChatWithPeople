@@ -1,6 +1,6 @@
 namespace Shared.RequestFeatures;
 
-public class FriendshipsParameter : RequestParameters
+public class FriendshipsParameters : RequestParameters
 {
     public string? SearchTerm { get; set; }
 }
