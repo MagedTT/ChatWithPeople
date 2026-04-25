@@ -6,5 +6,7 @@ public interface IRepositoryManager
     IInterestsRepository InterestsRepository { get; }
     IFriendshipsRepository FriendshipsRepository { get; }
     IFriendRequestRepository FriendRequestRepository { get; }
+    IGroupRepository GroupRepository { get; }
+    IGroupMemberRepository GroupMemberRepository { get; }
     Task SaveAsync();
 }

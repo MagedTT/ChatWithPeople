@@ -18,5 +18,16 @@ public class MappingProfile : Profile
         CreateMap<Friendship, FriendshipsDto>();
 
         CreateMap<FriendRequest, FriendRequestDto>();
+
+        CreateMap<Group, GroupDto>()
+            .ForMember(groupDto => groupDto.MembersCount, options =>
+                options.MapFrom(group => group.Members.Count));
+
+        CreateMap<GroupMember, GroupMemberDto>()
+            .ForMember(groupMemberDto => groupMemberDto.UserName, options =>
+                options.MapFrom(groupMember => groupMember.User.UserName));
+
+        CreateMap<GroupForCreationDto, Group>()
+            .ForMember(group => group.Avatar, options => options.Ignore());
     }
 }

@@ -11,6 +11,6 @@ public static class FriendshipRepositoryExtensions
 
         string lowerCaseSearchTerm = searchTerm.ToLower().Trim();
 
-        return friendships.Where(x => x.User2.UserName != null && x.User2.UserName.Equals(searchTerm));
+        return friendships.Where(x => x.User2.UserName != null && x.User2.UserName.ToLower().Contains(lowerCaseSearchTerm));
     }
 }
