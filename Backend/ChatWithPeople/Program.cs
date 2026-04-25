@@ -9,6 +9,8 @@ builder.Services.Configure<ApiBehaviorOptions>(config =>
     config.SuppressModelStateInvalidFilter = true;
 });
 
+builder.Services.ConfigureCORS();
+
 builder.Services.AddControllers(options => options.ReturnHttpNotAcceptable = true)
     .AddApplicationPart(typeof(ChatWithPeople.Presentation.AssemblyReference).Assembly);
 
@@ -38,6 +40,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 

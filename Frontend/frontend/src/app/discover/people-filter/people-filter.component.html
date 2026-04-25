@@ -1,0 +1,100 @@
+<div class="filter-bar">
+
+    <!-- Search input -->
+    <div class="search-wrap">
+        <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+        </svg>
+        <input class="search-input" type="text" placeholder="Search by name, location or interest…" [ngModel]="query()"
+            (ngModelChange)="query.set($event)" />
+        @if (query()) {
+        <button class="clear-input" (click)="query.set('')" aria-label="Clear search">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+        </button>
+        }
+    </div>
+
+    <!-- Filter toggle button -->
+    <div class="filter-wrap">
+        <button class="filter-btn" [class.active]="filterPanelOpen() || hasActiveFilters()" (click)="togglePanel()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+            </svg>
+            Filters
+            @if (activeFilterCount() > 0) {
+            <span class="filter-count">{{ activeFilterCount() }}</span>
+            }
+        </button>
+
+        <!-- Dropdown panel -->
+        @if (filterPanelOpen()) {
+        <div class="filter-panel">
+
+            <!-- Interest -->
+            <div class="panel-section">
+                <p class="panel-label">Interest</p>
+                <div class="interest-grid">
+                    @for (tag of interests; track tag) {
+                    <button class="interest-chip" [class.selected]="interest() === tag" (click)="setInterest(tag)">
+                        {{ tag }}
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- Sort -->
+            <div class="panel-section">
+                <p class="panel-label">Sort by</p>
+                <div class="sort-options">
+                    @for (opt of sortOptions; track opt.value) {
+                    <button class="sort-chip" [class.selected]="sort() === opt.value" (click)="setSort(opt.value)">
+                        {{ opt.label }}
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- Footer -->
+            <div class="panel-footer">
+                <button class="clear-btn" (click)="clearAll()" [disabled]="!hasActiveFilters()">
+                    Clear all
+                </button>
+                <button class="apply-btn" (click)="filterPanelOpen.set(false)">
+                    Apply
+                </button>
+            </div>
+
+        </div>
+        }
+    </div>
+
+    <!-- Active filter pills (visible when panel is closed) -->
+    @if (!filterPanelOpen() && hasActiveFilters()) {
+    <div class="active-pills">
+        @if (interest()) {
+        <span class="pill">
+            {{ interest() }}
+            <button class="pill-remove" (click)="interest.set('')">×</button>
+        </span>
+        }
+        @if (sort() !== 'newest') {
+        <span class="pill">
+            Online first
+            <button class="pill-remove" (click)="sort.set('newest')">×</button>
+        </span>
+        }
+    </div>
+    }
+
+</div>

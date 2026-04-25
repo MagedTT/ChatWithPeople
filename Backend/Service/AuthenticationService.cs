@@ -84,6 +84,8 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuthentication)
     {
+        if (userForAuthentication is null)
+            throw new Exception($"{nameof(UserForAuthenticationDto)}: userForAuthenticationDto is NULL");
         _user = await _userManager.FindByNameAsync(userForAuthentication.Username);
 
         bool result = _user is not null && await _userManager.CheckPasswordAsync(_user, userForAuthentication.Password);

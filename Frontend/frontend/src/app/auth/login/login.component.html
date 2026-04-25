@@ -1,0 +1,23 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group m-2">
+        <input type="text" class="form-control" placeholder="Username" formControlName="username" />
+        @if (loginForm.controls['username'].touched || loginForm.controls['username'].dirty) {
+        @if (loginForm.controls['username'].errors?.['required']) {
+        <small class="text-danger">Username is Required.</small>
+        }
+        }
+    </div>
+
+    <div class="form-group m-2">
+        <input type="password" class="form-control" placeholder="Password" formControlName="password" />
+        @if (loginForm.controls['password'].touched || loginForm.controls['password'].dirty) {
+        @if (loginForm.controls['password'].errors?.['required']) {
+        <small class="text-danger">Password is Required.</small>
+        }
+        }
+    </div>
+
+    <div class="m-2">
+        <button class="btn btn-primary" [disabled]="loginForm.invalid" type="submit">Login</button>
+    </div>
+</form>

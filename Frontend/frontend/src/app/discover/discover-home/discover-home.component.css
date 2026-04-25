@@ -1,0 +1,167 @@
+/* ── Tokens ─────────────────────────────────────────────── */
+:host {
+  --surface:       #ffffff;
+  --surface-2:     #f5f6f8;
+  --border:        #e8eaed;
+  --text-primary:  #111215;
+  --text-muted:    #6b7280;
+  --text-subtle:   #9ca3af;
+  --brand-blue:    #378ADD;
+  --brand-dark:    #185FA5;
+  --danger:        #E24B4A;
+  --radius-sm:     6px;
+  --radius-md:     10px;
+  --radius-lg:     14px;
+}
+
+/* ── Page ────────────────────────────────────────────────── */
+.discover-page {
+  padding: 1.75rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  letter-spacing: -.3px;
+}
+
+.page-sub {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── Results meta ────────────────────────────────────────── */
+.results-meta {
+  display: flex;
+  align-items: center;
+}
+
+.results-count {
+  font-size: 12.5px;
+  color: var(--text-subtle);
+  font-weight: 500;
+}
+
+/* ── User grid ───────────────────────────────────────────── */
+.user-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+/* ── Skeleton ────────────────────────────────────────────── */
+.skeleton-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.sk {
+  background: linear-gradient(90deg, var(--surface-2) 25%, #eceef1 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.sk-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+}
+
+.sk-name {
+  width: 100px;
+  height: 14px;
+}
+
+.sk-meta {
+  width: 80px;
+  height: 11px;
+}
+
+.sk-tag {
+  width: 60px;
+  height: 20px;
+  border-radius: 10px;
+}
+
+.sk-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.sk-btn {
+  width: 68px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+/* ── Empty / Error state ─────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 8px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+
+.empty-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.empty-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.retry-btn {
+  margin-top: 8px;
+  padding: 7px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  /* transition: background .14s; */
+}
+
+.retry-btn:hover { background: var(--surface-2); }

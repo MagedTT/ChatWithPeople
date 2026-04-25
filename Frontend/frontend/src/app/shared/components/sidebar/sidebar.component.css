@@ -1,0 +1,251 @@
+/* ── Tokens ─────────────────────────────────────────────── */
+:host {
+  --brand-blue:   #378ADD;
+  --surface:      #ffffff;
+  --surface-2:    #f5f6f8;
+  --border:       #e8eaed;
+  --text-primary: #111215;
+  --text-muted:   #6b7280;
+  --text-subtle:  #9ca3af;
+  --success:      #1D9E75;
+  --danger:       #E24B4A;
+  --sidebar-w:    228px;
+  --radius-sm:    6px;
+  --radius-md:    10px;
+}
+
+/* ── Sidebar shell ───────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  height: 100%;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0 1.5rem;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.sidebar::-webkit-scrollbar { display: none; }
+
+/* ── Nav section ─────────────────────────────────────────── */
+.nav-section {
+  padding: 0 10px;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Section label ───────────────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-subtle);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 0 6px;
+  margin: 0 0 6px;
+}
+
+.online-count {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: rgba(29, 158, 117, .12);
+  color: var(--success);
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 600;
+}
+
+/* ── Nav list ────────────────────────────────────────────── */
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+/* ── Nav item ────────────────────────────────────────────── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 8px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: color .14s, background .14s;
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+  background: var(--surface-2);
+}
+
+.nav-item:hover .nav-icon svg {
+  stroke: var(--text-primary);
+}
+
+.nav-item.active {
+  color: var(--brand-blue);
+  background: rgba(55, 138, 221, .08);
+}
+
+.nav-item.active .nav-icon svg {
+  stroke: var(--brand-blue);
+}
+
+/* ── Nav icon ────────────────────────────────────────────── */
+.nav-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: var(--text-muted);
+  transition: stroke .14s;
+}
+
+/* ── Nav label ───────────────────────────────────────────── */
+.nav-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Nav badge ───────────────────────────────────────────── */
+.nav-badge {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 9px;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  line-height: 1.6;
+  flex-shrink: 0;
+}
+
+.nav-badge.accent {
+  background: rgba(55, 138, 221, .10);
+  color: var(--brand-blue);
+  border-color: rgba(55, 138, 221, .15);
+}
+
+/* ── Online section ──────────────────────────────────────── */
+.online-section {
+  padding: 1rem 10px 0;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* ── Online list ─────────────────────────────────────────── */
+.online-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+/* ── Online user row ─────────────────────────────────────── */
+.online-user {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  transition: background .14s;
+  text-align: left;
+}
+
+.online-user:hover { background: var(--surface-2); }
+
+.online-user:hover .chat-icon {
+  opacity: 1;
+  color: var(--brand-blue);
+}
+
+/* ── Online avatar ───────────────────────────────────────── */
+.online-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.online-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.presence-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--success);
+  border: 2px solid var(--surface);
+}
+
+/* ── Online info ─────────────────────────────────────────── */
+.online-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.online-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.online-status {
+  font-size: 11px;
+  color: var(--success);
+}
+
+/* ── Chat icon (visible on hover) ────────────────────────── */
+.chat-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0;
+  color: var(--text-subtle);
+  transition: opacity .14s, color .14s;
+}
