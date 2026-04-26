@@ -1,9 +1,9 @@
-import { NgClass, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-received-sent-tabs',
-  imports: [NgClass, NgStyle],
+  imports: [NgStyle],
   templateUrl: './received-sent-tabs.component.html',
   styleUrl: './received-sent-tabs.component.css'
 })
