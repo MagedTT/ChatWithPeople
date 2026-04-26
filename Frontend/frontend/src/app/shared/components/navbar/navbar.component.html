@@ -1,123 +1,123 @@
-<nav class="navbar">
+<p>navbar works!</p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top px-4 border-bottom border-secondary"
+    style="height: 70px; background-color: #313131 !important;">
+    <div class="container-fluid d-flex align-items-center">
 
-    <!-- Brand -->
-    <a class="brand" routerLink="/discover">
-        <!-- <span class="brand-mark"></span> -->
-        <span class="brand-name">Chatly</span>
-    </a>
+        <!-- Brand -->
+        <a class="navbar-brand d-flex align-items-center fw-bold fs-4" href="#">
+            <span class="rounded-circle bg-primary me-2" style="width: 10px; height: 10px;"></span>
+            Chatly
+        </a>
 
-    <!-- Nav Links -->
-    <ul class="nav-links">
-        @for (link of navLinks; track link.path) {
-        <li>
-            <a class="nav-link" [routerLink]="link.path" routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">
-                {{ link.label }}
-            </a>
-        </li>
-        }
-    </ul>
-
-    <!-- Right Side -->
-    <div class="nav-right">
-
-        <!-- Notification Bell -->
-        <div class="notif-wrapper">
-            <button class="icon-btn notif-trigger" [class.active]="notifPanelOpen()" (click)="toggleNotifPanel()"
-                aria-label="Notifications">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                </svg>
-                <!-- @if (hasUnread()) {
-                <span class="notif-badge">{{ unreadCount() > 9 ? '9+' : unreadCount() }}</span>
-                } -->
-            </button>
-
-            <!-- Notification Panel -->
-            @if (notifPanelOpen()) {
-            <div class="notif-panel">
-                <div class="panel-header">
-                    <span class="panel-title">Notifications</span>
-                    <!-- @if (hasUnread()) {
-                    <span class="panel-count">{{ unreadCount() }} new</span>
-                    } -->
-                </div>
-                <ul class="notif-list">
-                    <!-- @for (notif of notifications(); track notif.id) {
-                    <li class="notif-item" [class.unread]="!notif.read">
-                        <div class="notif-avatar" [style.background]="notif.avatarBg" [style.color]="notif.avatarColor">
-                            {{ notif.initials }}
-                        </div>
-                        <div class="notif-body">
-                            <p class="notif-text">
-                                <strong>{{ notif.actorName }}</strong> {{ notif.message }}
-                            </p>
-                            <time class="notif-time">{{ notif.timeAgo }}</time>
-                        </div>
-                        @if (!notif.read) {
-                        <span class="unread-dot"></span>
-                        }
-                    </li>
-                    } @empty {
-                    <li class="notif-empty">You're all caught up ✓</li>
-                    } -->
-                </ul>
-                <a class="panel-footer" routerLink="/notifications">View all notifications</a>
+        <!-- Center Navigation Links -->
+        <div class="collapse navbar-collapse justify-content-center">
+            <div class="navbar-nav gap-2">
+                <a class="nav-link btn btn-outline-secondary border-secondary text-white px-4 rounded-3"
+                    [routerLink]="'discover-home'" routerLinkActive="active">Discover</a>
+                <a class="nav-link btn btn-outline-secondary border-secondary text-white px-4 rounded-3"
+                    [routerLink]="'friends'" routerLinkActive="active">Friends</a>
+                <a class="nav-link btn btn-outline-secondary border-secondary text-white px-4 rounded-3" href="#"
+                    routerLinkActive="active">Groups</a>
+                <a class="nav-link btn btn-outline-secondary border-secondary text-white px-4 rounded-3"
+                    routerLink="friend-requests" routerLinkActive="active">Requests</a>
             </div>
-            }
         </div>
 
-        <div class="divider"></div>
+        <!-- Right Side: Notification & Profile -->
+        <div class="d-flex align-items-center gap-3">
+            <!-- Notification Icon with Red Dot -->
+            <div class="dropdown">
+                <!-- Trigger: The Bell Icon -->
+                <div class="position-relative bg-transparent text-white bg-opacity-25 rounded-3 d-flex align-items-center justify-content-center cursor-pointer"
+                    style="width: 45px; height: 45px; cursor: pointer;" id="notificationDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
 
-        <!-- User Menu -->
-        <div class="user-menu-wrapper">
-            <button class="user-menu-trigger" [class.active]="userMenuOpen()" (click)="toggleUserMenu()"
-                aria-label="User menu">
-                <div class="user-avatar">{{ userInitials() }}</div>
-                <svg class="chevron" [class.rotated]="userMenuOpen()" width="12" height="12" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="6 9 12 15 18 9" />
-                </svg>
-            </button>
-
-            @if (userMenuOpen()) {
-            <div class="user-dropdown">
-                <div class="dropdown-user">
-                    <div class="dropdown-avatar">{{ userInitials() }}</div>
-                    <div>
-                        <!-- <p class="dropdown-name">{{ currentUser()?.firstName }} {{ currentUser()?.lastName }}</p>
-                        <p class="dropdown-email">{{ currentUser()?.email }}</p> -->
-                    </div>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                    </svg>
+                    <!-- Red Dot -->
+                    <!-- <span
+                        class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-dark rounded-circle"
+                        style="margin-top: 10px; margin-left: -10px;"></span> -->
                 </div>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" routerLink="/profile">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                        <circle cx="12" cy="7" r="4" />
-                    </svg>
-                    My profile
-                </a>
-                <a class="dropdown-item" routerLink="/settings">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3" />
-                        <path
-                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                    </svg>
-                    Settings
-                </a>
-                <div class="dropdown-divider"></div>
-                <button class="dropdown-item logout" (click)="logout()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                        <polyline points="16 17 21 12 16 7" />
-                        <line x1="21" y1="12" x2="9" y2="12" />
-                    </svg>
-                    Log out
-                </button>
+
+                <!-- Dropdown Menu -->
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow-lg border-secondary mt-2"
+                    aria-labelledby="notificationDropdown"
+                    style="min-width: 300px; border-radius: 12px; background-color: #2a2a2a;">
+                    <li>
+                        <h6 class="dropdown-header text-uppercase small fw-bold">Notifications</h6>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider border-secondary">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                            <div class="rounded-circle bg-primary me-3" style="width: 8px; height: 8px;"></div>
+                            <div>
+                                <div class="small text-white">Lena Müller sent a friend request</div>
+                                <div class="text-secondary" style="font-size: 0.75rem;">2 minutes ago</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                            <div class="rounded-circle bg-secondary me-3" style="width: 8px; height: 8px;"></div>
+                            <div>
+                                <div class="small text-white">New message in "Travel Group"</div>
+                                <div class="text-secondary" style="font-size: 0.75rem;">1 hour ago</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider border-secondary">
+                    </li>
+                    <li><a class="dropdown-item text-center small text-primary fw-bold" href="#">View All</a></li>
+                </ul>
             </div>
-            }
+
+            <!-- Profile Avatar -->
+            <!-- <div class="rounded-circle d-flex align-items-center justify-content-center bg-info text-dark fw-bold"
+                style="width: 45px; height: 45px;">
+                AH
+            </div> -->
+
+            <!-- More Menu Dropdown -->
+            <div class="dropdown">
+                <!-- Trigger Button -->
+                <button class="rounded-3 px-3 py-2 border-0 bg-transparent text-white" type="button"
+                    id="moreMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-info text-dark fw-bold"
+                        style="width: 45px; height: 45px;">
+                        AH
+                    </div>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow-lg border-secondary mt-2"
+                    aria-labelledby="moreMenuDropdown"
+                    style="border-radius: 12px; background-color: #2a2a2a; min-width: 180px;">
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#">
+                            <i class="bi bi-person-gear"></i> Account Settings
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider border-secondary">
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" (click)="logout()"
+                            href="#">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
 
     </div>

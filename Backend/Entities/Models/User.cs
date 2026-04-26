@@ -5,7 +5,7 @@ namespace Entities.Models;
 
 public class User : IdentityUser<Guid>
 {
-    public UserStatus Status { get; set; }
+    public UserStatus Status { get; set; } = UserStatus.Offline;
     public byte[]? ProfilePicture { get; set; }
     public DateTime LastSeen { get; set; } = DateTime.Now;
     public DateTime CreatedAt { get; set; } = DateTime.Now;

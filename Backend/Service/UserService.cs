@@ -28,4 +28,21 @@ public class UserService : IUserService
 
         return (users: userDtos, metaData: usersWithMetaData.MetaData);
     }
+
+    public async Task<(IEnumerable<UserForDiscoverDTO> usersForDiscoverDto, MetaData metaData)> GetAllUsersForDiscoverWithInterestsAsync(UserParameters userParameters, bool trackChanges)
+    {
+        PagedList<User> usersWithMetaData = await _repositoryManager.UserRepository.GetAllUsersForDiscoverWithInterestsAsync(userParameters, trackChanges: trackChanges);
+
+        IEnumerable<UserForDiscoverDTO> usersForDiscoverDtos = usersWithMetaData.Select(x => new UserForDiscoverDTO
+        {
+            Id = x.Id,
+            UserName = x.UserName ?? "",
+            ProfilePicture = x.ProfilePicture != null ? Convert.ToBase64String(x.ProfilePicture) : null,
+            Status = x.Status,
+            Age = x.Age,
+            Interests = x.UserInterests.Select(i => i.Interest.Name).ToList()
+        });
+
+        return (usersForDiscoverDto: usersForDiscoverDtos, metaData: usersWithMetaData.MetaData);
+    }
 }

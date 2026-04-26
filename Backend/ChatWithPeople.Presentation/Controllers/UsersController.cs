@@ -24,4 +24,15 @@ public class UsersController : ControllerBase
 
         return Ok(users);
     }
+
+    [HttpGet]
+    [Route("Discover")]
+    public async Task<IActionResult> GetAllUsersForDiscover([FromQuery] UserParameters userParameters)
+    {
+        (IEnumerable<UserForDiscoverDTO> users, MetaData metaData) = await _serviceManager.UserService.GetAllUsersForDiscoverWithInterestsAsync(userParameters, trackChanges: false);
+
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
+
+        return Ok(users);
+    }
 }

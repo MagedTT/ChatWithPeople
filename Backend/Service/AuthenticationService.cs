@@ -62,6 +62,7 @@ public class AuthenticationService : IAuthenticationService
 
             if (userWithUserInterests is not null)
             {
+                userWithUserInterests.Status = Entities.Enums.UserStatus.Online;
                 foreach (Guid interestId in userForRegisteration.InterestIds)
                 {
                     userWithUserInterests.UserInterests.Add(new UserInterest { UserId = userWithUserInterests.Id, InterestId = interestId });
