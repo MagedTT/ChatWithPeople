@@ -1,0 +1,24 @@
+<!-- Tabs (Nav Pills) -->
+<ul class="nav nav-pills mb-4 border-bottom border-secondary pb-3 gap-2">
+    <li class="nav-item">
+        <button
+            class="btn btn-outline-secondary rounded-pill px-4 py-2 d-flex align-items-center gap-2 text-white fw-bold"
+            (click)="sendToFriendRequeststheToggleReceivedSentButtonStatus('received')" (click)="onToggleColor()"
+            [ngStyle]="{ 'background-color': toggleColor ? '#6c757d' : '' }">
+            Received
+            <span class="badge rounded-circle bg-info bg-opacity-25 text-white" style="font-size: 0.7rem;">
+                3
+            </span>
+        </button>
+    </li>
+    <li class="nav-item">
+        <button
+            class="btn btn-outline-secondary rounded-pill px-4 py-2 d-flex align-items-center gap-2 text-white fw-bold"
+            [ngStyle]="{ 'background-color': toggleColor ? '' : '#6c757d' }"
+            (click)="sendToFriendRequeststheToggleReceivedSentButtonStatus('sent')" (click)="onToggleColor()">
+            Sent <span class="badge rounded-circle bg-info bg-opacity-25 text-white" style="font-size: 0.7rem;">
+                2
+            </span>
+        </button>
+    </li>
+</ul>

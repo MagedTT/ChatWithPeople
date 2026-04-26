@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { FilterFriendsComponent } from './filter-friends.component';
+
+describe('FilterFriendsComponent', () => {
+  let component: FilterFriendsComponent;
+  let fixture: ComponentFixture<FilterFriendsComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [FilterFriendsComponent]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(FilterFriendsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

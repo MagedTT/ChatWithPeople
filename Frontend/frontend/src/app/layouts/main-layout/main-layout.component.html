@@ -1,0 +1,13 @@
+<!-- MainLayoutComponent.html -->
+<div class="d-flex flex-column vh-100">
+    <app-navbar></app-navbar>
+
+    <div class="d-flex flex-grow-1">
+        <app-sidebar></app-sidebar>
+
+        <!-- The 'layout-content' class now handles the offsets -->
+        <main class="flex-grow-1 layout-content p-4 overflow-auto">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

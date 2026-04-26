@@ -1,0 +1,57 @@
+<div class="card text-white text-center p-4 border-0 shadow h-100"
+    style="border-radius: 20px; background-color: #313131 !important;">
+
+    <!-- Profile Avatar Wrapper -->
+    <div class="d-flex justify-content-center mb-3">
+        <!-- Relative container to hold the absolute dot -->
+        <div class="position-relative">
+
+            <!-- Main Avatar Circle -->
+            <div class="rounded-circle d-flex align-items-center justify-content-center overflow-hidden"
+                style="width: 100px; height: 100px; background-color: #f8bbd0; color: #313131;">
+                @if (user?.profilePicture) {
+                <img [src]="getImageUrl(user?.profilePicture ?? null)" [alt]="user?.userName"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                } @else {
+                <span class="fw-bold" style="font-size: 2rem;">
+                    {{ user?.userName?.charAt(0) }}
+                </span>
+                }
+            </div>
+
+            <!-- Status Dot: Absolute positioned to bottom right -->
+            <span class="position-absolute bottom-0 end-0 border border-3 border-dark rounded-circle p-2"
+                [class.bg-success]="user?.status == 1" [class.bg-danger]="user?.status == 2"
+                style="transform: translate(-10%, -10%); width: 20px; height: 20px;"
+                title="{{ user?.status == 1 ? 'Online' : 'Offline' }}">
+            </span>
+        </div>
+    </div>
+
+    <!-- User Info -->
+    <div class="card-body p-0 d-flex flex-column">
+        <h4 class="card-title fw-bold mb-1">{{ user?.userName }}</h4>
+        <p class="text-secondary mb-3">Dublin, Ireland</p>
+
+        <!-- Interests Container -->
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+            @for (interest of user?.interests; track interest) {
+            <span class="badge rounded-pill px-3 py-2" style="background-color: #1e3a8a !important;">
+                {{ interest }}
+            </span>
+            }
+        </div>
+
+        <!-- Buttons (Pushed to bottom) -->
+        <div class="d-flex gap-2 mt-auto">
+            <button class="btn btn-outline-secondary text-white border-secondary w-100 py-2"
+                style="border-radius: 12px;">
+                Add friend
+            </button>
+            <button class="btn btn-outline-secondary text-white border-secondary w-100 py-2"
+                style="border-radius: 12px;">
+                Message
+            </button>
+        </div>
+    </div>
+</div>

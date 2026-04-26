@@ -1,0 +1,17 @@
+.layout-content {
+    /* Offset for the 70px high fixed navbar */
+    margin-top: 70px; 
+    
+    /* Offset for the 280px wide fixed sidebar */
+    margin-left: 280px; 
+    
+    /* Ensure it fills the remaining height */
+    min-height: calc(100vh - 70px);
+}
+
+/* Responsiveness: If sidebar hides on mobile, reset margin */
+@media (max-width: 991px) {
+    .layout-content {
+        margin-left: 0;
+    }
+}
