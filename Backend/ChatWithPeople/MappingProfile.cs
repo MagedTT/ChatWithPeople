@@ -32,6 +32,7 @@ public class MappingProfile : Profile
 
         CreateMap<MessageRead, MessageReadDto>();
         CreateMap<Message, MessageDto>();
+        CreateMap<MessageForCreationDto, Message>();
         CreateMap<ConversationParticipant, ConversationParticipantDto>();
         CreateMap<Conversation, ConversationDto>();
     }

@@ -16,6 +16,7 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IFriendRequestService> _friendRequestService;
     private readonly Lazy<IGroupService> _groupService;
     private readonly Lazy<IConversationService> _conversationService;
+    private readonly Lazy<IMessageService> _messageService;
     public ServiceManager(UserManager<User> userManager,
     RoleManager<IdentityRole<Guid>> roleManager,
     IOptionsMonitor<JwtConfiguration> optionsMonitorJwtConfiguration,
@@ -29,6 +30,7 @@ public class ServiceManager : IServiceManager
         _friendRequestService = new Lazy<IFriendRequestService>(() => new FriendRequestService(userManager, repositoryManager, loggerManager, mapper));
         _groupService = new Lazy<IGroupService>(() => new GroupService(userManager, repositoryManager, mapper, loggerManager));
         _conversationService = new Lazy<IConversationService>(() => new ConversationService(userManager, repositoryManager, loggerManager, mapper));
+        _messageService = new Lazy<IMessageService>(() => new MessageService(userManager, repositoryManager, loggerManager, mapper));
     }
     public IAuthenticationService AuthenticationService => _authenticationService.Value;
     public IUserService UserService => _userService.Value;
@@ -40,4 +42,6 @@ public class ServiceManager : IServiceManager
     public IGroupService GroupService => _groupService.Value;
 
     public IConversationService ConversationService => _conversationService.Value;
+
+    public IMessageService MessageService => _messageService.Value;
 }

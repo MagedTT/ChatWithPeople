@@ -18,11 +18,14 @@ public class ConversationRepository : RepositoryBase<Conversation>, IConversatio
             x => x.Type == Entities.Enums.ConversationType.Private &&
                 x.ConversationParticipants.Any(cp => cp.UserId.Equals(userId) &&
                 x.ConversationParticipants.Any(cp => cp.UserId.Equals(friendId))), trackChanges
-            ).Include(x => x.ConversationParticipants).Include(x => x.Messages).FirstOrDefaultAsync();
+            ).Include(x => x.ConversationParticipants).FirstOrDefaultAsync();
 
     public void CreateConversation(Conversation conversation)
         => Create(conversation);
 
     public void DeleteConversation(Conversation conversation)
         => Delete(conversation);
+
+    public async Task<bool> CheckIfConversationExistsByConversationIdAsync(Guid conversationId)
+        => await _context.Conversations.AnyAsync(x => x.Id.Equals(conversationId));
 }

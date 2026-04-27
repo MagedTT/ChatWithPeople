@@ -15,6 +15,8 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<IGroupMemberRepository> _groupMemberRepository;
     private readonly Lazy<IConversationRepository> _conversationRepository;
     private readonly Lazy<IConversationParticipantRepository> _conversationParticipantRepository;
+    private readonly Lazy<IMessageRepository> _messageRepository;
+    private readonly Lazy<IMessageReadRepository> _messageReadRepository;
 
     public RepositoryManager(ApplicationDbContext context)
     {
@@ -27,6 +29,8 @@ public class RepositoryManager : IRepositoryManager
         _groupMemberRepository = new Lazy<IGroupMemberRepository>(() => new GroupMemberRepository(context));
         _conversationRepository = new Lazy<IConversationRepository>(() => new ConversationRepository(context));
         _conversationParticipantRepository = new Lazy<IConversationParticipantRepository>(() => new ConversationParticipantRepository(context));
+        _messageRepository = new Lazy<IMessageRepository>(() => new MessageRepository(context));
+        _messageReadRepository = new Lazy<IMessageReadRepository>(() => new MessageReadRepository(context));
     }
 
     public IUserRepository UserRepository => _userRepository.Value;
@@ -37,6 +41,10 @@ public class RepositoryManager : IRepositoryManager
     public IGroupMemberRepository GroupMemberRepository => _groupMemberRepository.Value;
     public IConversationRepository ConversationRepository => _conversationRepository.Value;
     public IConversationParticipantRepository ConversationParticipantRepository => _conversationParticipantRepository.Value;
+
+    public IMessageRepository MessageRepository => _messageRepository.Value;
+
+    public IMessageReadRepository MessageReadRepository => _messageReadRepository.Value;
 
     public async Task SaveAsync() => await _context.SaveChangesAsync();
 }
