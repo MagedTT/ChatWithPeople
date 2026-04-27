@@ -17,8 +17,8 @@ public class ConversationRepository : RepositoryBase<Conversation>, IConversatio
         => await FindByCondition(
             x => x.Type == Entities.Enums.ConversationType.Private &&
                 x.ConversationParticipants.Any(cp => cp.UserId.Equals(userId) &&
-                x.ConversationParticipants.Any(cp => cp.UserId.Equals(friendId)))
-            ).FirstOrDefaultAsync();
+                x.ConversationParticipants.Any(cp => cp.UserId.Equals(friendId))), trackChanges
+            ).Include(x => x.ConversationParticipants).Include(x => x.Messages).FirstOrDefaultAsync();
 
     public void CreateConversation(Conversation conversation)
         => Create(conversation);
