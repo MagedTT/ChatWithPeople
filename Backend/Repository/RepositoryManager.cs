@@ -13,6 +13,8 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<IFriendRequestRepository> _friendRequestRepository;
     private readonly Lazy<IGroupRepository> _groupRepository;
     private readonly Lazy<IGroupMemberRepository> _groupMemberRepository;
+    private readonly Lazy<IConversationRepository> _conversationRepository;
+    private readonly Lazy<IConversationParticipantRepository> _conversationParticipantRepository;
 
     public RepositoryManager(ApplicationDbContext context)
     {
@@ -23,6 +25,8 @@ public class RepositoryManager : IRepositoryManager
         _friendRequestRepository = new Lazy<IFriendRequestRepository>(() => new FriendRequestRepository(context));
         _groupRepository = new Lazy<IGroupRepository>(() => new GroupRepository(context));
         _groupMemberRepository = new Lazy<IGroupMemberRepository>(() => new GroupMemberRepository(context));
+        _conversationRepository = new Lazy<IConversationRepository>(() => new ConversationRepository(context));
+        _conversationParticipantRepository = new Lazy<IConversationParticipantRepository>(() => new ConversationParticipantRepository(context));
     }
 
     public IUserRepository UserRepository => _userRepository.Value;
@@ -31,6 +35,8 @@ public class RepositoryManager : IRepositoryManager
     public IFriendRequestRepository FriendRequestRepository => _friendRequestRepository.Value;
     public IGroupRepository GroupRepository => _groupRepository.Value;
     public IGroupMemberRepository GroupMemberRepository => _groupMemberRepository.Value;
+    public IConversationRepository ConversationRepository => _conversationRepository.Value;
+    public IConversationParticipantRepository ConversationParticipantRepository => _conversationParticipantRepository.Value;
 
     public async Task SaveAsync() => await _context.SaveChangesAsync();
 }

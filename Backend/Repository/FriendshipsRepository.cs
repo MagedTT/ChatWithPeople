@@ -58,7 +58,7 @@ public class FriendshipsRepository : RepositoryBase<Friendship>, IFriendshipsRep
     public async Task<bool> FriendshipExistsAsync(Guid user1Id, Guid user2Id)
     {
         if (
-            await _context.Friendships.AnyAsync(x =>
+            await _context.Friendships.AsNoTracking().AnyAsync(x =>
             (x.User1Id.Equals(user1Id) && x.User2Id.Equals(user2Id)) ||
             (x.User1Id.Equals(user2Id) && x.User2Id.Equals(user1Id)))
         )

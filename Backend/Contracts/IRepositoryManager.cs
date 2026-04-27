@@ -8,5 +8,7 @@ public interface IRepositoryManager
     IFriendRequestRepository FriendRequestRepository { get; }
     IGroupRepository GroupRepository { get; }
     IGroupMemberRepository GroupMemberRepository { get; }
+    IConversationRepository ConversationRepository { get; }
+    IConversationParticipantRepository ConversationParticipantRepository { get; }
     Task SaveAsync();
 }

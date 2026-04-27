@@ -7,4 +7,5 @@ public interface IServiceManager
     IFriendshipsService FriendshipsService { get; }
     IFriendRequestService FriendRequestService { get; }
     IGroupService GroupService { get; }
+    IConversationService ConversationService { get; }
 }

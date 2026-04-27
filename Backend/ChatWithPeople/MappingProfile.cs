@@ -29,5 +29,10 @@ public class MappingProfile : Profile
 
         CreateMap<GroupForCreationDto, Group>()
             .ForMember(group => group.Avatar, options => options.Ignore());
+
+        CreateMap<MessageRead, MessageReadDto>();
+        CreateMap<Message, MessageDto>();
+        CreateMap<ConversationParticipant, ConversationParticipantDto>();
+        CreateMap<Conversation, ConversationDto>();
     }
 }
