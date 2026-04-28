@@ -1,5 +1,6 @@
 using ChatWithPeople;
 using ChatWithPeople.Extensions;
+using ChatWithPeople.Hubs;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,10 @@ builder.Services.Configure<ApiBehaviorOptions>(config =>
 });
 
 builder.Services.ConfigureCORS();
+
+builder.Services.AddSignalR();
+
+builder.Services.ConfigureJWT(builder.Configuration);
 
 builder.Services.AddControllers(options => options.ReturnHttpNotAcceptable = true)
     .AddApplicationPart(typeof(ChatWithPeople.Presentation.AssemblyReference).Assembly);
@@ -43,8 +48,12 @@ app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ConversationHub>("/hubs/ConversationHub");
 
 app.Run();

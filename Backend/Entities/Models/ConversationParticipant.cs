@@ -9,4 +9,6 @@ public class ConversationParticipant
 
     public Guid UserId { get; set; }
     public User User { get; set; } = default!;
+
+    public DateTime LastReadAt { get; set; } = DateTime.Now;
 }

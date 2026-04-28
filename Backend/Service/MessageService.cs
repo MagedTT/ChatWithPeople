@@ -1,9 +1,12 @@
 using AutoMapper;
+using ChatWithPeople.Hubs;
 using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Service.Contracts;
+using Service.Contracts.HubContracts;
 using Shared.DTOs;
 using Shared.RequestFeatures;
 
@@ -15,13 +18,15 @@ public class MessageService : IMessageService
     private readonly IRepositoryManager _repositoryManager;
     private readonly ILoggerManager _loggerManager;
     private readonly IMapper _mapper;
+    private readonly IHubContext<ConversationHub, IConversationClient> _hub;
 
-    public MessageService(UserManager<User> userManager, IRepositoryManager repositoryManager, ILoggerManager loggerManager, IMapper mapper)
+    public MessageService(UserManager<User> userManager, IRepositoryManager repositoryManager, ILoggerManager loggerManager, IMapper mapper, IHubContext<ConversationHub, IConversationClient> hub)
     {
         _userManager = userManager;
         _repositoryManager = repositoryManager;
         _loggerManager = loggerManager;
         _mapper = mapper;
+        _hub = hub;
     }
 
     public async Task<(IEnumerable<MessageDto> messages, MessageMetaData messageMetaData)> GetAllMessagesByConversationIdAsync(Guid conversationId, MessageParameters messageParameters, bool trackChanges)
@@ -49,22 +54,26 @@ public class MessageService : IMessageService
 
         _repositoryManager.MessageRepository.CreateMessage(message);
 
-        MessageRead messageRead = new()
-        {
-            UserId = messageForCreationDto.SenderId,
-            MessageId = message.Id,
-            ReadAt = DateTime.Now
-        };
-
-        _repositoryManager.MessageReadRepository.CreateMessageRead(messageRead);
-
         await _repositoryManager.SaveAsync();
-
-        message.MessagesRead.Add(messageRead);
 
         MessageDto messageDto = _mapper.Map<MessageDto>(message);
 
+        IEnumerable<ConversationParticipant> conversationParticipants = await _repositoryManager.ConversationParticipantRepository.GetAllConversationParticipantsExceptSenderByConversationIdAsync(conversationId, messageForCreationDto.SenderId, trackChanges: false);
+
+        foreach (ConversationParticipant conversationParticipant in conversationParticipants)
+        {
+            await _hub.Clients.User(conversationParticipant.UserId.ToString()).ReceiveMessage(messageDto);
+        }
+
         return messageDto;
+    }
+
+    public async Task MarkAsReadAsync(Guid conversationId, Guid senderId, Guid receiverId)
+    {
+        await _repositoryManager.MessageRepository.MarkAllMessagesAsReadAsync(conversationId, receiverId);
+        await _repositoryManager.SaveAsync();
+
+        await _hub.Clients.User(senderId.ToString()).MessagesSeenByUserIdInConversationWithId(conversationId, receiverId);
     }
 
     public async Task DeleteMessageByConversationIdAsync(Guid conversationId, Guid messageId, bool trackChanges)
@@ -85,7 +94,7 @@ public class MessageService : IMessageService
 
     private async Task<Message> GetMessageAndCheckIfMessageExistsAsync(Guid messageId, bool trackChanges)
     {
-        Message? message = await _repositoryManager.MessageRepository.GetMessageByidAsync(messageId, trackChanges);
+        Message? message = await _repositoryManager.MessageRepository.GetMessageByIdAsync(messageId, trackChanges);
         if (message is null)
             throw new MessageNotFound($"Message with Id: {messageId} not found");
 

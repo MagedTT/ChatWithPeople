@@ -31,6 +31,15 @@ public class MessagesController : ControllerBase
     public async Task<IActionResult> CreateMessage(Guid conversationId, [FromBody] MessageForCreationDto messageForCreationDto)
         => Ok(await _serviceManager.MessageService.CreateMessageForConversationAsync(conversationId, messageForCreationDto));
 
+    [HttpPost]
+    [Route("MarkAsRead/{senderId:guid}/{receiverId:guid}")]
+    public async Task<IActionResult> MarkAsRead(Guid conversationId, Guid senderId, Guid receiverId)
+    {
+        await _serviceManager.MessageService.MarkAsReadAsync(conversationId, senderId, receiverId);
+
+        return NoContent();
+    }
+
     [HttpDelete]
     [Route("Delete/{messageId:guid}")]
     public async Task<IActionResult> DeleteMessageForConversation(Guid conversationId, Guid messageId)

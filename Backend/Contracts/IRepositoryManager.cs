@@ -11,6 +11,5 @@ public interface IRepositoryManager
     IConversationRepository ConversationRepository { get; }
     IConversationParticipantRepository ConversationParticipantRepository { get; }
     IMessageRepository MessageRepository { get; }
-    IMessageReadRepository MessageReadRepository { get; }
     Task SaveAsync();
 }

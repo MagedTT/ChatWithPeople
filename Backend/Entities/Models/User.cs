@@ -21,7 +21,6 @@ public class User : IdentityUser<Guid>
     public ICollection<FriendRequest> ReceivedFriendRequests { get; set; } = default!;
 
     public ICollection<Message> MessagesSent { get; set; } = default!;
-    public ICollection<MessageRead> MessageReads { get; set; } = default!;
     public ICollection<ConversationParticipant> ConversationParticipants { get; set; } = default!;
 
     public ICollection<Group> GroupsCreated { get; set; } = default!;

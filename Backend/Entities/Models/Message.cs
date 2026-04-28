@@ -17,6 +17,4 @@ public class Message
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? EditedAt { get; set; }
     public bool IsDeleted { get; set; } = false;
-
-    public ICollection<MessageRead> MessagesRead { get; set; } = default!;
 }

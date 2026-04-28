@@ -1,10 +1,13 @@
 using AutoMapper;
+using ChatWithPeople.Hubs;
 using Contracts;
 using Entities.ConfigurationModels;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using Service.Contracts;
+using Service.Contracts.HubContracts;
 
 namespace Service;
 
@@ -22,7 +25,7 @@ public class ServiceManager : IServiceManager
     IOptionsMonitor<JwtConfiguration> optionsMonitorJwtConfiguration,
     IMapper mapper,
     IRepositoryManager repositoryManager,
-    ILoggerManager loggerManager)
+    ILoggerManager loggerManager, IHubContext<ConversationHub, IConversationClient> hub)
     {
         _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, roleManager, optionsMonitorJwtConfiguration, mapper, repositoryManager, loggerManager));
         _userService = new Lazy<IUserService>(() => new UserService(repositoryManager, mapper, loggerManager));
@@ -30,7 +33,7 @@ public class ServiceManager : IServiceManager
         _friendRequestService = new Lazy<IFriendRequestService>(() => new FriendRequestService(userManager, repositoryManager, loggerManager, mapper));
         _groupService = new Lazy<IGroupService>(() => new GroupService(userManager, repositoryManager, mapper, loggerManager));
         _conversationService = new Lazy<IConversationService>(() => new ConversationService(userManager, repositoryManager, loggerManager, mapper));
-        _messageService = new Lazy<IMessageService>(() => new MessageService(userManager, repositoryManager, loggerManager, mapper));
+        _messageService = new Lazy<IMessageService>(() => new MessageService(userManager, repositoryManager, loggerManager, mapper, hub));
     }
     public IAuthenticationService AuthenticationService => _authenticationService.Value;
     public IUserService UserService => _userService.Value;

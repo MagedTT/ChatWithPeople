@@ -17,7 +17,6 @@ public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, 
     public DbSet<Conversation> Conversations { get; set; }
     public DbSet<ConversationParticipant> ConversationParticipants { get; set; }
     public DbSet<Message> Messages { get; set; }
-    public DbSet<MessageRead> MessageReads { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Interest> Interests { get; set; }
     public DbSet<UserInterest> UserInterests { get; set; }

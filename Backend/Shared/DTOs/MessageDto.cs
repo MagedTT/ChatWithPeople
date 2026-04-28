@@ -12,5 +12,4 @@ public class MessageDto
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? EditedAt { get; set; }
     public bool IsDeleted { get; set; } = false;
-    public IEnumerable<MessageReadDto> MessagesRead { get; set; } = new List<MessageReadDto>();
 }
