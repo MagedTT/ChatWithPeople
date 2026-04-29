@@ -22,15 +22,16 @@
             <a routerLink="friend-requests"
                 class="list-group-item list-group-item-action bg-transparent text-white border border-secondary rounded-pill d-flex justify-content-between align-items-center py-2">
                 <span><i class="bi bi-person-plus me-2"></i> Friend requests</span>
-                <span class="badge bg-primary rounded-pill small">3</span>
+                <span class="badge bg-primary rounded-pill small">{{ state.friendRequestsCount() }}</span>
             </a>
         </div>
     </div>
 
     <!-- ONLINE NOW SECTION -->
-    <div>
+    <!-- <div>
         <h6 class="text-uppercase small fw-bold mb-3 px-2">Online Now</h6>
         <ul class="nav flex-column gap-3 px-2">
+            @for (friend of onlineFriends; track friend) {
             <li class="d-flex align-items-center">
                 <div class="position-relative">
                     <div class="rounded-circle d-flex align-items-center justify-content-center bg-info text-dark fw-bold"
@@ -38,18 +39,44 @@
                     <span class="position-absolute bottom-0 end-0 border border-dark rounded-circle bg-success p-1"
                         style="width: 12px; height: 12px;"></span>
                 </div>
-                <span class="ms-3 text-white">Lena M.</span>
+                <span class="ms-3 text-white">{{ friend?.userName }}</span>
             </li>
+            }
+        </ul>
+    </div> -->
+
+    <div>
+        <h6 class="text-uppercase small fw-bold mb-3 px-2">Online Now</h6>
+        <ul class="nav flex-column gap-3 px-2">
+            @for (friend of onlineFriends; track friend) {
             <li class="d-flex align-items-center">
                 <div class="position-relative">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-success text-dark fw-bold"
-                        style="width: 40px; height: 40px; background-color: #8bc34a !important;">RT</div>
-                    <span class="position-absolute bottom-0 end-0 border border-dark rounded-circle bg-success p-1"
-                        style="width: 12px; height: 12px;"></span>
+                    <!-- Avatar Container -->
+                    <div class="rounded-circle d-flex align-items-center justify-content-center overflow-hidden bg-info text-dark fw-bold"
+                        style="width: 40px; height: 40px;">
+
+                        @if (friend?.profilePicture) {
+                        <!-- Friend's Picture -->
+                        <img [src]="getImageUrl(friend?.profilePicture)" [alt]="friend.userName"
+                            style="width: 100%; height: 100%; object-fit: cover;">
+                        } @else {
+                        <!-- Fallback Initials -->
+                        <span style="font-size: 0.9rem;">
+                            {{ friend?.userName?.charAt(0) }}
+                        </span>
+                        }
+                    </div>
+
+                    <!-- Online Status Dot -->
+                    <span class="position-absolute bottom-0 end-0 border border-dark rounded-circle bg-success"
+                        style="width: 12px; height: 12px; border-width: 2px !important;"></span>
                 </div>
-                <span class="ms-3 text-white">Ryo T.</span>
+
+                <span class="ms-3 text-white">{{ friend?.userName }}</span>
             </li>
+            }
         </ul>
     </div>
+
 
 </aside>

@@ -38,7 +38,7 @@ export class TokenService {
 
   isTokenExpired(accessToken: string): boolean {
     try {
-      const tokenPayload = JSON.parse(atob(accessToken.split(',')[1]));
+      const tokenPayload = JSON.parse(atob(accessToken.split('.')[1]));
       return tokenPayload.exp * 1000 < Date.now();
     } catch {
       return false;
@@ -65,7 +65,7 @@ export class TokenService {
 
   decodeAccessToken(accessToken: string): JwtPayload | null {
     try {
-      return JSON.parse(atob(accessToken.split(',')[1])) as JwtPayload;
+      return JSON.parse(atob(accessToken.split('.')[1])) as JwtPayload;
     } catch {
       return null;
     }
@@ -87,6 +87,8 @@ export class TokenService {
       const accessToken = this.getAccessToken();
 
       if (!accessToken) return null;
+
+      console.log(`====> ${this.decodeAccessToken(accessToken)?.sub ?? null}`);
 
       return this.decodeAccessToken(accessToken)?.sub ?? null;
     } catch {

@@ -7,6 +7,7 @@ import { FriendRequestsComponent } from './features/requests/pages/friend-reques
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { authGuard } from './core/guards/auth.guard';
+import { ConversationComponent } from './features/conversation/pages/conversation/conversation.component';
 
 export const routes: Routes = [
     {
@@ -16,7 +17,8 @@ export const routes: Routes = [
         children: [
             { path: 'discover-home', component: DiscoverHomeComponent },
             { path: 'friends', component: FriendsComponent },
-            { path: 'friend-requests', component: FriendRequestsComponent }
+            { path: 'friend-requests', component: FriendRequestsComponent },
+            { path: 'conversation/:id', component: ConversationComponent }
         ]
     },
     {

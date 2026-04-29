@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
 using Shared.DTOs;
@@ -20,6 +21,17 @@ public class UserService : IUserService
         _logger = logger;
     }
 
+    public async Task<UserDto?> GetUserByIdAsync(Guid userId, bool trackChanges)
+    {
+        User? user = await _repositoryManager.UserRepository.GetUserByIdAsync(userId, trackChanges);
+        if (user is null)
+            throw new UserNotFoundException(userId);
+
+        UserDto userDto = _mapper.Map<UserDto>(user);
+
+        return userDto;
+    }
+
     public async Task<(IEnumerable<UserDto> users, MetaData metaData)> GetAllUsersAsync(UserParameters userParameters, bool trackChanges)
     {
         PagedList<User> usersWithMetaData = await _repositoryManager.UserRepository.GetAllUsersAsync(userParameters, trackChanges: trackChanges);
@@ -29,9 +41,9 @@ public class UserService : IUserService
         return (users: userDtos, metaData: usersWithMetaData.MetaData);
     }
 
-    public async Task<(IEnumerable<UserForDiscoverDTO> usersForDiscoverDto, MetaData metaData)> GetAllUsersForDiscoverWithInterestsAsync(UserParameters userParameters, bool trackChanges)
+    public async Task<(IEnumerable<UserForDiscoverDTO> usersForDiscoverDto, MetaData metaData)> GetAllUsersForDiscoverWithInterestsAsync(Guid userId, UserParameters userParameters, bool trackChanges)
     {
-        PagedList<User> usersWithMetaData = await _repositoryManager.UserRepository.GetAllUsersForDiscoverWithInterestsAsync(userParameters, trackChanges: trackChanges);
+        PagedList<User> usersWithMetaData = await _repositoryManager.UserRepository.GetAllUsersForDiscoverWithInterestsAsync(userId, userParameters, trackChanges: trackChanges);
 
         IEnumerable<UserForDiscoverDTO> usersForDiscoverDtos = usersWithMetaData.Select(x => new UserForDiscoverDTO
         {

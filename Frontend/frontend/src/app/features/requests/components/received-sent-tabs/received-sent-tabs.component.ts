@@ -1,5 +1,5 @@
 import { NgStyle } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-received-sent-tabs',
@@ -8,6 +8,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './received-sent-tabs.component.css'
 })
 export class ReceivedSentTabsComponent {
+  @Input() receivedRequestsCount: number = 0;
+  @Input() sentRequestsCount: number = 0;
+
   @Output() toggleReceivedSentButton = new EventEmitter<string>();
   toggleColor: boolean = false;
 

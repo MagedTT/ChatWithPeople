@@ -55,6 +55,9 @@ namespace Repository.Migrations
                     b.Property<Guid>("ConversationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("LastReadAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -324,31 +327,6 @@ namespace Repository.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Entities.Models.MessageRead", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MessageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ReadAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("MessageId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("MessageReads");
                 });
 
             modelBuilder.Entity("Entities.Models.Notification", b =>
@@ -785,25 +763,6 @@ namespace Repository.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("Entities.Models.MessageRead", b =>
-                {
-                    b.HasOne("Entities.Models.Message", "Message")
-                        .WithMany("MessagesRead")
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.User", "User")
-                        .WithMany("MessageReads")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Message");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Entities.Models.Notification", b =>
                 {
                     b.HasOne("Entities.Models.User", "User")
@@ -909,11 +868,6 @@ namespace Repository.Migrations
                     b.Navigation("UserInterests");
                 });
 
-            modelBuilder.Entity("Entities.Models.Message", b =>
-                {
-                    b.Navigation("MessagesRead");
-                });
-
             modelBuilder.Entity("Entities.Models.User", b =>
                 {
                     b.Navigation("ConversationParticipants");
@@ -931,8 +885,6 @@ namespace Repository.Migrations
                     b.Navigation("GroupMemberships");
 
                     b.Navigation("GroupsCreated");
-
-                    b.Navigation("MessageReads");
 
                     b.Navigation("MessagesSent");
 

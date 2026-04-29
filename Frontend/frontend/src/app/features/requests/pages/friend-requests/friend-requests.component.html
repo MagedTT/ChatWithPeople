@@ -6,10 +6,13 @@
     </div>
 
     <!-- Tabs (Nav Pills) -->
-    <app-received-sent-tabs (toggleReceivedSentButton)="onReceivedSentButtonClicked($event)"></app-received-sent-tabs>
+    <app-received-sent-tabs [receivedRequestsCount]="this.state.receivedFriendrequestsCountComputed()"
+        [sentRequestsCount]="this.state.sentFriendrequestsCountComputed()"
+        (toggleReceivedSentButton)="onReceivedSentButtonClicked($event)"></app-received-sent-tabs>
 
     <!-- Request List -->
     @if (received) {
+    @for (receivedRequest of this.state.receivedFriendRequests(); track receivedRequest.id) {
     <div class="d-flex flex-column gap-3" style="max-width: 800px;">
 
         <!-- Single Request Card (Repeat for each user) -->
@@ -24,9 +27,9 @@
 
             <!-- Info -->
             <div class="flex-grow-1">
-                <h6 class="mb-0 fw-bold">Sara Rossi</h6>
+                <h6 class="mb-0 fw-bold">{{ receivedRequest.userName }}</h6>
                 <div class="small text-secondary">
-                    Sent 2 minutes ago • 4 mutual friends
+                    Sent At {{ receivedRequest.createdAt }}
                 </div>
             </div>
 
@@ -37,7 +40,7 @@
                     Accept
                 </button>
                 <button class="btn btn-outline-secondary text-white rounded-3 px-4 py-1 border-opacity-50"
-                    style="font-size: 0.9rem;">
+                    style="font-size: 0.9rem;" (click)="rejectReceivedRequest(receivedRequest.id)">
                     Decline
                 </button>
             </div>
@@ -45,7 +48,12 @@
 
         <!-- Repeat item for Kenji Aoki ... -->
     </div>
+    <br />
+    } @empty {
+    <h1 class="text-danger">No Received Requests Found.</h1>
+    }
     } @else {
+    @for (sentRequest of this.state.sentFriendRequests(); track sentRequest.id) {
     <div class="d-flex flex-column gap-3" style="max-width: 800px;">
 
         <!-- Sent Request Card -->
@@ -60,8 +68,8 @@
 
             <!-- User Info -->
             <div class="flex-grow-1">
-                <h6 class="text-white mb-0 fw-bold">Priya Kapoor</h6>
-                <div class="small text-secondary">Sent 1 day ago</div>
+                <h6 class="text-white mb-0 fw-bold">{{ sentRequest.userName }}</h6>
+                <div class="small text-secondary">Sent {{ sentRequest.createdAt }}</div>
             </div>
 
             <!-- Actions Area -->
@@ -75,11 +83,15 @@
 
                 <!-- Cancel Button -->
                 <button class="btn btn-outline-secondary text-white rounded-3 px-4 py-2 border-opacity-50"
-                    style="font-size: 0.9rem; min-width: 100px;">
+                    style="font-size: 0.9rem; min-width: 100px;" (click)="cancelSentRequest(sentRequest.id)">
                     Cancel
                 </button>
             </div>
         </div>
     </div>
+    <br />
+    } @empty {
+    <h1 class="text-danger">No Sent Requests Found.</h1>
+    }
     }
 </div>

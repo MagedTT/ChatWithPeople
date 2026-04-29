@@ -106,6 +106,15 @@ public class FriendshipsService : IFriendshipsService
         return usersWithMinimalInformation;
     }
 
+    public async Task<IEnumerable<UserMinimalInformationDto>> GetFriendsMinimalInformationByUserIdAsync(Guid userId, bool trackChanges)
+    {
+        IEnumerable<User> friends = await _repositoryManager.FriendshipsRepository.GetFriendsMinimalInformationByUserIdAsync(userId, trackChanges);
+
+        IEnumerable<UserMinimalInformationDto> userMinimalInformationDtos = _mapper.Map<IEnumerable<UserMinimalInformationDto>>(friends);
+
+        return userMinimalInformationDtos;
+    }
+
     private (Guid smallerUserId, Guid biggerUserId) OrderUsersIds(Guid user1Id, Guid user2Id)
         => user1Id > user2Id ? (user2Id, user1Id) : (user1Id, user2Id);
 }

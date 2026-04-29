@@ -15,11 +15,33 @@ public class FriendRequestsController : ControllerBase
     public FriendRequestsController(IServiceManager serviceManager)
         => _serviceManager = serviceManager;
 
+    // [HttpGet]
+    // [Route("{userId:guid}")]
+    // public async Task<IActionResult> GetFriendRequests(Guid userId, [FromQuery] FriendRequestParameters friendRequestParameters)
+    // {
+    //     (IEnumerable<FriendRequestDto> friendRequestDtos, MetaData metaData) = await _serviceManager.FriendRequestService.GetFriendRequestsAsync(userId, friendRequestParameters, trackChanges: false);
+
+    //     Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
+
+    //     return Ok(friendRequestDtos);
+    // }
+
     [HttpGet]
-    [Route("{userId:guid}")]
-    public async Task<IActionResult> GetFriendRequests(Guid userId, [FromQuery] FriendRequestParameters friendRequestParameters)
+    [Route("{userId:guid}/Sent")]
+    public async Task<IActionResult> GetSentFriendRequests(Guid userId, [FromQuery] FriendRequestParameters friendRequestParameters)
     {
-        (IEnumerable<FriendRequestDto> friendRequestDtos, MetaData metaData) = await _serviceManager.FriendRequestService.GetFriendRequestsAsync(userId, friendRequestParameters, trackChanges: false);
+        (IEnumerable<FriendRequestDto> friendRequestDtos, MetaData metaData) = await _serviceManager.FriendRequestService.GetFriendRequestsAsync(userId, friendRequestParameters, sent: true);
+
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
+
+        return Ok(friendRequestDtos);
+    }
+
+    [HttpGet]
+    [Route("{userId:guid}/Received")]
+    public async Task<IActionResult> GetReceivedFriendRequests(Guid userId, [FromQuery] FriendRequestParameters friendRequestParameters)
+    {
+        (IEnumerable<FriendRequestDto> friendRequestDtos, MetaData metaData) = await _serviceManager.FriendRequestService.GetFriendRequestsAsync(userId, friendRequestParameters, sent: false);
 
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
 
@@ -42,7 +64,7 @@ public class FriendRequestsController : ControllerBase
     => Ok(await _serviceManager.FriendRequestService.GetFriendRequestsReceivedCountAsync(userId));
 
     [HttpPost]
-    [Route("{friendRequestId}/accept")]
+    [Route("{friendRequestId:guid}/accept")]
     public async Task<IActionResult> AcceptFriendRequest(Guid friendRequestId)
     {
         await _serviceManager.FriendRequestService.AcceptFriendRequest(friendRequestId);
@@ -51,7 +73,7 @@ public class FriendRequestsController : ControllerBase
     }
 
     [HttpPost]
-    [Route("{friendRequestId}/reject")]
+    [Route("{friendRequestId:guid}/reject")]
     public async Task<IActionResult> RejectFriendRequest(Guid friendRequestId)
     {
         await _serviceManager.FriendRequestService.DeleteFriendRequest(friendRequestId);

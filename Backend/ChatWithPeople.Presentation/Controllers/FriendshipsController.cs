@@ -27,9 +27,14 @@ public class FriendshipsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("{userId:guid}/OnlineFriends")]
+    [Route("OnlineFriends/{userId:guid}")]
     public async Task<IActionResult> GetOnlineFriends(Guid userId)
         => Ok(await _serviceManager.FriendshipsService.GetFriendsWithMinimalInformationByUserIdAsync(userId, trackChanges: false));
+
+    // [HttpGet]
+    // [Route("{userId:guid}/OnlineFriends")]
+    // public async Task<IActionResult> GetOnlineFriends(Guid userId)
+    //     => Ok(await _serviceManager.FriendshipsService.GetFriendsWithMinimalInformationByUserIdAsync(userId, trackChanges: false));
 
     [HttpPost]
     [Route("{user1Id:guid}/{user2Id:guid}")]

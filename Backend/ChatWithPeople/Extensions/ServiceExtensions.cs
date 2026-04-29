@@ -78,9 +78,14 @@ public static class ServiceExtensions
             {
                 OnMessageReceived = context =>
                 {
-                    string? token = context.Request.Query["accessToken"];
+                    string? token = context.Request.Query["access_token"];
+                    foreach (var x in context.Request.Query.ToList())
+                    {
+                        Console.WriteLine($"==> {x.Key}: {x.Value}");
+                    }
+                    Console.WriteLine($"Token: {token}");
                     string path = context.HttpContext.Request.Path;
-
+                    Console.WriteLine($"======================> {path}");
                     if (!string.IsNullOrEmpty(token) && path.StartsWith("/hubs"))
                         context.Token = token;
 

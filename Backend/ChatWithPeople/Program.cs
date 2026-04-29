@@ -14,8 +14,6 @@ builder.Services.ConfigureCORS();
 
 builder.Services.AddSignalR();
 
-builder.Services.ConfigureJWT(builder.Configuration);
-
 builder.Services.AddControllers(options => options.ReturnHttpNotAcceptable = true)
     .AddApplicationPart(typeof(ChatWithPeople.Presentation.AssemblyReference).Assembly);
 
@@ -33,6 +31,8 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureIdentity();
 builder.Services.AddJwtConfiguration(builder.Configuration);
+
+builder.Services.ConfigureJWT(builder.Configuration);
 
 var app = builder.Build();
 

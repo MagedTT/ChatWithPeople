@@ -12,6 +12,9 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
         : base(context)
     { }
 
+    public async Task<User?> GetUserByIdAsync(Guid userId, bool trackChanges)
+        => await FindByCondition(x => x.Id.Equals(userId), trackChanges).FirstOrDefaultAsync();
+
     public async Task<PagedList<User>> GetAllUsersAsync(UserParameters userParameters, bool trackChanges)
     {
         List<User> users =
@@ -24,10 +27,10 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
         return new PagedList<User>(users, count, userParameters.PageNumber, userParameters.PageSize);
     }
 
-    public async Task<PagedList<User>> GetAllUsersForDiscoverWithInterestsAsync(UserParameters userParameters, bool trackChanges)
+    public async Task<PagedList<User>> GetAllUsersForDiscoverWithInterestsAsync(Guid userId, UserParameters userParameters, bool trackChanges)
     {
         List<User> users =
-            await FindAll(trackChanges)
+            await FindByCondition(x => !x.Id.Equals(userId), trackChanges)
             .Skip((userParameters.PageNumber - 1) * userParameters.PageSize)
             .Take(userParameters.PageSize)
             .Include(x => x.UserInterests)

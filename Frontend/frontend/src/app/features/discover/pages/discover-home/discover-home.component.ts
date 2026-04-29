@@ -3,6 +3,7 @@ import { PeopleFilterComponent } from '../../components/people-filter/people-fil
 import { UserCardComponent } from '../../components/user-card/user-card.component';
 import { DiscoverService } from '../../services/discover.service';
 import { UserForDiscover } from '../../models/UserForDiscover.model';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-discover-home',
@@ -13,10 +14,10 @@ import { UserForDiscover } from '../../models/UserForDiscover.model';
 export class DiscoverHomeComponent implements OnInit {
   usersForDiscover?: UserForDiscover[];
 
-  constructor(private discoverService: DiscoverService) { }
+  constructor(private authService: AuthService, private discoverService: DiscoverService) { }
 
   ngOnInit(): void {
-    this.discoverService.getAllUsersForDiscover().subscribe(result => {
+    this.discoverService.getAllUsersForDiscover(this.authService.currentUserId()).subscribe(result => {
       this.usersForDiscover = result;
     });
   }

@@ -25,15 +25,24 @@ public class FriendRequestService : IFriendRequestService
         _mapper = mapper;
     }
 
-    public async Task<(IEnumerable<FriendRequestDto> friendRequestDtos, MetaData metaData)> GetFriendRequestsAsync(Guid userId, FriendRequestParameters friendRequestParameters, bool trackChanges)
+    // public async Task<(IEnumerable<FriendRequestDto> friendRequestDtos, MetaData metaData)> GetFriendRequestsAsync(Guid userId, FriendRequestParameters friendRequestParameters, bool trackChanges)
+    // {
+    //     await CheckIfUserExists(userId);
+
+    //     PagedList<FriendRequest> friendRequestsWithMetaData = await _repositoryManager.FriendRequestRepository.GetFriendRequestsAsync(userId, friendRequestParameters, trackChanges);
+
+    //     IEnumerable<FriendRequestDto> friendRequestDtos = _mapper.Map<IEnumerable<FriendRequestDto>>(friendRequestsWithMetaData);
+
+    //     return (friendRequestDtos, metaData: friendRequestsWithMetaData.MetaData);
+    // }
+
+    public async Task<(IEnumerable<Shared.DTOs.FriendRequestDto> friendRequestDtos, MetaData metaData)> GetFriendRequestsAsync(Guid userId, FriendRequestParameters friendRequestParameters, bool sent = false)
     {
-        await CheckIfUserExists(userId);
+        PagedList<Entities.Models.FriendRequestDto> friendRequestsDtosWithMetaData = await _repositoryManager.FriendRequestRepository.GetFriendRequestsByUserIdAsync(userId, friendRequestParameters, sent);
 
-        PagedList<FriendRequest> friendRequestsWithMetaData = await _repositoryManager.FriendRequestRepository.GetFriendRequestsAsync(userId, friendRequestParameters, trackChanges);
+        IEnumerable<Shared.DTOs.FriendRequestDto> friendRequestDtos = _mapper.Map<IEnumerable<Shared.DTOs.FriendRequestDto>>(friendRequestsDtosWithMetaData);
 
-        IEnumerable<FriendRequestDto> friendRequestDtos = _mapper.Map<IEnumerable<FriendRequestDto>>(friendRequestsWithMetaData);
-
-        return (friendRequestDtos, metaData: friendRequestsWithMetaData.MetaData);
+        return (friendRequestDtos, metaData: friendRequestsDtosWithMetaData.MetaData);
     }
 
     public async Task AcceptFriendRequest(Guid friendRequestId)

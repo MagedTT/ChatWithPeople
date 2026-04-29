@@ -5,7 +5,7 @@ namespace Service.Contracts;
 
 public interface IFriendRequestService
 {
-    Task<(IEnumerable<FriendRequestDto> friendRequestDtos, MetaData metaData)> GetFriendRequestsAsync(Guid userId, FriendRequestParameters friendRequestParameters, bool trackChanges);
+    Task<(IEnumerable<FriendRequestDto> friendRequestDtos, MetaData metaData)> GetFriendRequestsAsync(Guid userId, FriendRequestParameters friendRequestParameters, bool sent = false);
     Task<int> GetFriendRequestsTotalCountAsync(Guid userId);
     Task<int> GetFriendRequestsSentCountAsync(Guid userId);
     Task<int> GetFriendRequestsReceivedCountAsync(Guid userId);

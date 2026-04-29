@@ -11,13 +11,15 @@ public class MappingProfile : Profile
         CreateMap<UserForRegisterationDto, User>()
             .ForMember(user => user.ProfilePicture, options => options.Ignore());
 
-        CreateMap<User, UserDto>();
+        CreateMap<User, UserDto>()
+            .ForMember(userDto => userDto.ProfilePicture, options => options.MapFrom(user => user.ProfilePicture != null ? Convert.ToBase64String(user.ProfilePicture) : ""));
 
-        CreateMap<User, UserMinimalInformationDto>();
+        CreateMap<User, UserMinimalInformationDto>()
+            .ForMember(userDto => userDto.ProfilePicture, options => options.MapFrom(user => user.ProfilePicture != null ? Convert.ToBase64String(user.ProfilePicture) : ""));
 
         CreateMap<Friendship, FriendshipsDto>();
 
-        CreateMap<FriendRequest, FriendRequestDto>();
+        CreateMap<Entities.Models.FriendRequestDto, Shared.DTOs.FriendRequestDto>();
 
         CreateMap<Group, GroupDto>()
             .ForMember(groupDto => groupDto.MembersCount, options =>

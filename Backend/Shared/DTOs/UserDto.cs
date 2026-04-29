@@ -5,8 +5,9 @@ namespace Shared.DTOs;
 public class UserDto
 {
     public Guid Id { get; set; }
+    public string UserName { get; set; } = string.Empty;
     public UserStatus Status { get; set; }
-    public byte[]? ProfilePicture { get; set; }
+    public string? ProfilePicture { get; set; }
     public DateTime LastSeen { get; set; }
     public DateTime CreatedAt { get; set; }
     public bool IsDeleted { get; set; }

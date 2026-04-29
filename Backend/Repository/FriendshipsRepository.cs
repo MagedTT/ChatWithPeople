@@ -33,6 +33,32 @@ public class FriendshipsRepository : RepositoryBase<Friendship>, IFriendshipsRep
         return new PagedList<Friendship>(friendships, count, friendshipParameters.PageNumber, friendshipParameters.PageSize);
     }
 
+    public async Task<IEnumerable<User>> GetFriendsMinimalInformationByUserIdAsync(Guid userId, bool trackChanges)
+    {
+        IEnumerable<User> friends = await _context.Friendships
+            .Where(x =>
+                x.User1Id.Equals(userId) && x.User2.IsDeleted == false ||
+                x.User2Id.Equals(userId) && x.User1.IsDeleted == false)
+            .Select(x =>
+            x.User1Id.Equals(userId)
+                ? new User
+                {
+                    Id = x.User2.Id,
+                    UserName = x.User2.UserName,
+                    Status = x.User2.Status,
+                    ProfilePicture = x.User2.ProfilePicture
+                }
+                : new User
+                {
+                    Id = x.User1.Id,
+                    Status = x.User1.Status,
+                    UserName = x.User1.UserName,
+                    ProfilePicture = x.User2.ProfilePicture
+                }).ToListAsync();
+
+        return friends;
+    }
+
     public async Task<Friendship?> GetFriendshipByUser1IdAndUser2IdAsync(Guid user1Id, Guid user2Id, bool trackChanges)
         => await FindByCondition(x => x.User1Id.Equals(user1Id) && x.User2Id.Equals(user2Id), trackChanges).FirstOrDefaultAsync();
 

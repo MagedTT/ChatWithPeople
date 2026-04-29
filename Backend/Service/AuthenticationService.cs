@@ -134,8 +134,10 @@ public class AuthenticationService : IAuthenticationService
     {
         List<Claim> claims = new()
         {
-            new Claim(ClaimTypes.Name, _user?.UserName!),
-            new Claim(ClaimTypes.NameIdentifier, _user?.Id.ToString()!)
+            // new Claim(ClaimTypes.Name, _user?.UserName!),
+            // new Claim(ClaimTypes.NameIdentifier, _user?.Id.ToString()!)
+            new Claim("name", _user?.UserName!),
+            new Claim("sub", _user?.Id.ToString()!)
         };
 
         IList<string> roles = await _userManager.GetRolesAsync(_user ?? new User());

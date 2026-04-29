@@ -16,6 +16,11 @@ public class UsersController : ControllerBase
         => _serviceManager = serviceManager;
 
     [HttpGet]
+    [Route("{userId:guid}")]
+    public async Task<IActionResult> GetUserById(Guid userId)
+        => Ok(await _serviceManager.UserService.GetUserByIdAsync(userId, trackChanges: false));
+
+    [HttpGet]
     public async Task<IActionResult> GetAllUsers([FromQuery] UserParameters userParameters)
     {
         (IEnumerable<UserDto> users, MetaData metaData) = await _serviceManager.UserService.GetAllUsersAsync(userParameters: userParameters, trackChanges: false);
@@ -26,10 +31,10 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    [Route("Discover")]
-    public async Task<IActionResult> GetAllUsersForDiscover([FromQuery] UserParameters userParameters)
+    [Route("Discover/{userId:guid}")]
+    public async Task<IActionResult> GetAllUsersForDiscover(Guid userId, [FromQuery] UserParameters userParameters)
     {
-        (IEnumerable<UserForDiscoverDTO> users, MetaData metaData) = await _serviceManager.UserService.GetAllUsersForDiscoverWithInterestsAsync(userParameters, trackChanges: false);
+        (IEnumerable<UserForDiscoverDTO> users, MetaData metaData) = await _serviceManager.UserService.GetAllUsersForDiscoverWithInterestsAsync(userId, userParameters, trackChanges: false);
 
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
 

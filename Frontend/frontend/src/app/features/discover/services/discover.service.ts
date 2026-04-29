@@ -10,8 +10,8 @@ export class DiscoverService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllUsersForDiscover(): Observable<UserForDiscover[]> {
-    return this.httpClient.get<UserForDiscover[]>('https://localhost:7079/api/Users/Discover');
+  getAllUsersForDiscover(userId: string | null): Observable<UserForDiscover[]> {
+    return this.httpClient.get<UserForDiscover[]>(`https://localhost:7079/api/Users/Discover/${userId}`);
   }
 
   getImageUrl(base64: string | null): string {
