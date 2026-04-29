@@ -12,7 +12,7 @@
             <a routerLink="friends"
                 class="list-group-item list-group-item-action bg-transparent text-white border border-secondary rounded-pill d-flex justify-content-between align-items-center py-2">
                 <span><i class="bi bi-people me-2"></i> My friends</span>
-                <span class="badge bg-secondary rounded-pill small">24</span>
+                <span class="badge bg-secondary rounded-pill small">{{ state.friendsCountComputed() }}</span>
             </a>
             <a href="#"
                 class="list-group-item list-group-item-action bg-transparent text-white border border-secondary rounded-pill d-flex justify-content-between align-items-center py-2">
@@ -68,8 +68,13 @@
                     </div>
 
                     <!-- Online Status Dot -->
+                    @if (friend.userStatus === 1) {
                     <span class="position-absolute bottom-0 end-0 border border-dark rounded-circle bg-success"
                         style="width: 12px; height: 12px; border-width: 2px !important;"></span>
+                    } @else {
+                    <span class="position-absolute bottom-0 end-0 border border-dark rounded-circle bg-danger"
+                        style="width: 12px; height: 12px; border-width: 2px !important;"></span>
+                    }
                 </div>
 
                 <span class="ms-3 text-white">{{ friend?.userName }}</span>

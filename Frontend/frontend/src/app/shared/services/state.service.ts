@@ -1,5 +1,6 @@
 import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { FriendRequestDto } from '../models/FriendRequestDto';
+import { FriendDto } from '../models/FriendDto';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import { FriendRequestDto } from '../models/FriendRequestDto';
 export class StateService {
   friendRequestsCount: WritableSignal<number> = signal<number>(0);
   friendsCount: WritableSignal<number> = signal<number>(0);
+  friends: WritableSignal<FriendDto[]> = signal<FriendDto[]>([]);
   receivedFriendRequests: WritableSignal<FriendRequestDto[]> = signal<FriendRequestDto[]>([]);
   sentFriendRequests: WritableSignal<FriendRequestDto[]> = signal<FriendRequestDto[]>([]);
 

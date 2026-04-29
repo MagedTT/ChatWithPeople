@@ -14,23 +14,19 @@ public class FriendshipsRepository : RepositoryBase<Friendship>, IFriendshipsRep
         : base(context)
     { }
 
-    public async Task<PagedList<Friendship>> GetAllFriendsByUserIdAsync(Guid userId, FriendshipsParameters friendshipParameters, bool trackChanges)
+    public async Task<PagedList<Friend>> GetAllFriendsByUserIdAsync(Guid userId, FriendshipsParameters friendshipParameters, bool trackChanges)
     {
-        List<Friendship> friendships = await FindByCondition(x => (x.User1Id.Equals(userId) && x.User2.IsDeleted == false) || (x.User2Id.Equals(userId) && x.User1.IsDeleted == false), trackChanges: trackChanges)
-            .Search(friendshipParameters.SearchTerm ?? "")
+        List<Friend> friends = await FindByCondition(x => (x.User1Id.Equals(userId) && x.User2.IsDeleted == false && x.User2.UserName!.ToLower().Contains(friendshipParameters.SearchTerm ?? "")) || (x.User2Id.Equals(userId) && x.User1.IsDeleted == false && x.User1.UserName!.ToLower().Contains(friendshipParameters.SearchTerm ?? "")), trackChanges: trackChanges)
             .Skip((friendshipParameters.PageNumber - 1) * friendshipParameters.PageSize)
             .Take(friendshipParameters.PageSize)
-            .Include(x => x.User2)
+            .Select(x => x.User1Id.Equals(userId) ? new Friend { FriendId = x.User2Id, UserName = x.User2.UserName!, ProfilePicture = x.User2.ProfilePicture != null ? Convert.ToBase64String(x.User2.ProfilePicture) : null, UserStatus = x.User2.Status } : new Friend { FriendId = x.User1Id, UserName = x.User1.UserName!, ProfilePicture = x.User1.ProfilePicture != null ? Convert.ToBase64String(x.User1.ProfilePicture) : null, UserStatus = x.User1.Status })
             .ToListAsync();
 
         int count =
-             await FindByCondition(x =>
-                (x.User1Id.Equals(userId) && x.User2.IsDeleted == false) ||
-                (x.User2Id.Equals(userId) && x.User1.IsDeleted == false), trackChanges)
-            .Search(friendshipParameters.SearchTerm ?? "")
+             await FindByCondition(x => (x.User1Id.Equals(userId) && x.User2.IsDeleted == false && x.User2.UserName!.ToLower().Contains(friendshipParameters.SearchTerm ?? "")) || (x.User2Id.Equals(userId) && x.User1.IsDeleted == false && x.User1.UserName!.ToLower().Contains(friendshipParameters.SearchTerm ?? "")), trackChanges: trackChanges)
             .CountAsync();
 
-        return new PagedList<Friendship>(friendships, count, friendshipParameters.PageNumber, friendshipParameters.PageSize);
+        return new PagedList<Friend>(friends, count, friendshipParameters.PageNumber, friendshipParameters.PageSize);
     }
 
     public async Task<IEnumerable<User>> GetFriendsMinimalInformationByUserIdAsync(Guid userId, bool trackChanges)
@@ -65,8 +61,8 @@ public class FriendshipsRepository : RepositoryBase<Friendship>, IFriendshipsRep
     public async Task<IEnumerable<Friendship>> GetFriendUsersMinimalInformation(Guid userId, bool trackChanges)
     {
         var x = await FindByCondition(x =>
-            (x.User1Id.Equals(userId) && x.User2.IsDeleted == false) ||
-            (x.User2Id.Equals(userId) && x.User1.IsDeleted == false), trackChanges: false)
+            (x.User1Id.Equals(userId) && x.User2.IsDeleted == false && x.User2.Status == Entities.Enums.UserStatus.Online) ||
+            (x.User2Id.Equals(userId) && x.User1.IsDeleted == false && x.User1.Status == Entities.Enums.UserStatus.Online), trackChanges: false)
             .Include(x => x.User1)
             .Include(x => x.User2)
             .ToListAsync();
@@ -92,4 +88,7 @@ public class FriendshipsRepository : RepositoryBase<Friendship>, IFriendshipsRep
 
         return false;
     }
+
+    public async Task<int> GetTotalFriendsCountByUserIdAsync(Guid userId)
+        => await _context.Friendships.CountAsync(x => x.User1Id.Equals(userId) && x.User2.IsDeleted == false || x.User2Id.Equals(userId) && x.User1.IsDeleted == false);
 }

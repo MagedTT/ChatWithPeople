@@ -11,12 +11,12 @@
             </svg>
         </span>
         <input type="text" class="form-control bg-transparent border-0 text-white shadow-none"
-            placeholder="Search friends">
+            placeholder="Search friends" [(ngModel)]="searchTerm">
     </div>
 
     <!-- Filter Button -->
     <button class="btn d-flex align-items-center gap-2 px-3 py-2 rounded-3 border border-secondary border-opacity-25"
-        style="background-color: #141414; color: white;">
+        style="background-color: #141414; color: white;" (click)="sendSearchTerm.emit(searchTerm)">
         <span>Search</span>
     </button>
 

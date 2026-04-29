@@ -26,11 +26,20 @@ export class FriendRequestsComponent implements OnInit {
       this.received = false;
   }
 
+  acceptFriendRequest(friendRequestId: string) {
+    this.requestService.acceptFriendRequest(friendRequestId);
+  }
+
   cancelSentRequest(requestId: string) {
     this.requestService.cancelSentFriendRequest(requestId);
   }
 
   rejectReceivedRequest(requestId: string) {
     this.requestService.rejectReceivedFriendRequest(requestId);
+  }
+
+  getImageUrl(base64: string | null | undefined): string {
+    if (!base64) return 'assets/default.png';
+    return `data:image/png;base64,${base64}`;
   }
 }

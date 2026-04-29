@@ -19,11 +19,18 @@ public class FriendshipsController : ControllerBase
     [Route("{userId:guid}")]
     public async Task<IActionResult> GetFriendships(Guid userId, [FromQuery] FriendshipsParameters friendshipsParameters)
     {
-        (IEnumerable<FriendshipsDto> friendshipsDtos, MetaData metaData) = await _serviceManager.FriendshipsService.GetAllFriendsByUserIdAsync(userId, friendshipsParameters, trackChanges: false);
+        (IEnumerable<FriendDto> friendDtos, MetaData metaData) = await _serviceManager.FriendshipsService.GetAllFriendsByUserIdAsync(userId, friendshipsParameters, trackChanges: false);
 
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
 
-        return Ok(friendshipsDtos);
+        return Ok(friendDtos);
+    }
+
+    [HttpGet]
+    [Route("TotalFriendsCount/{userId:guid}")]
+    public async Task<IActionResult> GetFriendships(Guid userId)
+    {
+        return Ok(await _serviceManager.FriendshipsService.GetTotalFriendsCountByUserIdAsync(userId));
     }
 
     [HttpGet]

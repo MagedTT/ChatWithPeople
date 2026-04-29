@@ -1,8 +1,8 @@
 import { UserStatus } from "./UserStatus";
 
-export interface FriendMinimalInformation {
-    id: string;
+export interface FriendDto {
+    friendId: string;
     userName: string;
     profilePicture?: string;
-    userStatus: UserStatus
+    userStatus: UserStatus;
 }

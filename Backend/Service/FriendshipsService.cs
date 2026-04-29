@@ -31,15 +31,15 @@ public class FriendshipsService : IFriendshipsService
         _loggerManager = loggerManager;
     }
 
-    public async Task<(IEnumerable<FriendshipsDto> friendshipDtos, MetaData metaData)> GetAllFriendsByUserIdAsync(Guid userId, FriendshipsParameters friendshipsParameters, bool trackChanges)
+    public async Task<(IEnumerable<FriendDto> friendDtos, MetaData metaData)> GetAllFriendsByUserIdAsync(Guid userId, FriendshipsParameters friendshipsParameters, bool trackChanges)
     {
         await CheckIfUserExistsAsync(userId);
 
-        PagedList<Friendship> friendshipsWithMetaData = await _repositoryManager.FriendshipsRepository.GetAllFriendsByUserIdAsync(userId, friendshipsParameters, trackChanges);
+        PagedList<Friend> friendsWithMetaData = await _repositoryManager.FriendshipsRepository.GetAllFriendsByUserIdAsync(userId, friendshipsParameters, trackChanges);
 
-        IEnumerable<FriendshipsDto> friendshipsDtos = _mapper.Map<IEnumerable<FriendshipsDto>>(friendshipsWithMetaData);
+        IEnumerable<FriendDto> friendDtos = _mapper.Map<IEnumerable<FriendDto>>(friendsWithMetaData);
 
-        return (friendshipDtos: friendshipsDtos, metaData: friendshipsWithMetaData.MetaData);
+        return (friendDtos, metaData: friendsWithMetaData.MetaData);
     }
 
     public async Task<FriendshipsDto?> GetFriendshipByUser1IdAndUser2IdAsync(Guid user1Id, Guid user2Id, bool trackChanges)
@@ -76,6 +76,12 @@ public class FriendshipsService : IFriendshipsService
         Friendship friendship = await GetFriendshipByUser1IAnsUser2IdAndCheckIfItExists(user1Id, user2Id, trackChanges);
 
         _repositoryManager.FriendshipsRepository.DeleteFriendship(friendship);
+
+        Conversation? conversation = await _repositoryManager.ConversationRepository.GetConversationByUserIdAndFriendIdAsync(user1Id, user2Id, trackChanges: false);
+
+        if (conversation is not null)
+            _repositoryManager.ConversationRepository.DeleteConversation(conversation);
+
         await _repositoryManager.SaveAsync();
     }
 
@@ -117,4 +123,9 @@ public class FriendshipsService : IFriendshipsService
 
     private (Guid smallerUserId, Guid biggerUserId) OrderUsersIds(Guid user1Id, Guid user2Id)
         => user1Id > user2Id ? (user2Id, user1Id) : (user1Id, user2Id);
+
+    public async Task<int> GetTotalFriendsCountByUserIdAsync(Guid userId)
+    {
+        return await _repositoryManager.FriendshipsRepository.GetTotalFriendsCountByUserIdAsync(userId);
+    }
 }

@@ -10,7 +10,8 @@ public interface IFriendshipsRepository
     Task<bool> FriendshipExistsAsync(Guid user1Id, Guid user2Id);
     Task<IEnumerable<Friendship>> GetFriendUsersMinimalInformation(Guid userId, bool trackChanges);
     Task<IEnumerable<User>> GetFriendsMinimalInformationByUserIdAsync(Guid userId, bool trackChanges);
-    Task<PagedList<Friendship>> GetAllFriendsByUserIdAsync(Guid userId, FriendshipsParameters friendshipParameters, bool trackChanges);
+    Task<int> GetTotalFriendsCountByUserIdAsync(Guid userId);
+    Task<PagedList<Friend>> GetAllFriendsByUserIdAsync(Guid userId, FriendshipsParameters friendshipParameters, bool trackChanges);
     void CreateFriendship(Friendship friendship);
     void DeleteFriendship(Friendship friendship);
 }

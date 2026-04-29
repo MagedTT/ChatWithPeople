@@ -12,17 +12,21 @@
 
     <!-- Request List -->
     @if (received) {
-    @for (receivedRequest of this.state.receivedFriendRequests(); track receivedRequest.id) {
     <div class="d-flex flex-column gap-3" style="max-width: 800px;">
-
-        <!-- Single Request Card (Repeat for each user) -->
+        @for (receivedRequest of this.state.receivedFriendRequests(); track receivedRequest.id) {
+        <!-- Single Request Card -->
         <div class="d-flex align-items-center p-3 rounded-4 border border-secondary border-opacity-25 shadow-sm"
             style="background-color: #313131;">
 
-            <!-- Avatar -->
-            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-dark me-3"
+            <!-- Avatar with Image Check -->
+            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-dark me-3 overflow-hidden"
                 style="width: 56px; height: 56px; background-color: #c5cae9; font-size: 1.1rem;">
-                SR
+                @if (receivedRequest.profilePicture) {
+                <img [src]="getImageUrl(receivedRequest.profilePicture)" [alt]="receivedRequest.userName"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                } @else {
+                {{ receivedRequest.userName.charAt(0) }}
+                }
             </div>
 
             <!-- Info -->
@@ -36,7 +40,7 @@
             <!-- Actions -->
             <div class="d-flex gap-2 ms-3">
                 <button class="btn btn-outline-secondary text-white rounded-3 px-4 py-1 border-opacity-50"
-                    style="font-size: 0.9rem;">
+                    style="font-size: 0.9rem;" (click)="acceptFriendRequest(receivedRequest.id)">
                     Accept
                 </button>
                 <button class="btn btn-outline-secondary text-white rounded-3 px-4 py-1 border-opacity-50"
@@ -45,25 +49,26 @@
                 </button>
             </div>
         </div>
-
-        <!-- Repeat item for Kenji Aoki ... -->
+        } @empty {
+        <h1 class="text-danger">No Received Requests Found.</h1>
+        }
     </div>
-    <br />
-    } @empty {
-    <h1 class="text-danger">No Received Requests Found.</h1>
-    }
     } @else {
-    @for (sentRequest of this.state.sentFriendRequests(); track sentRequest.id) {
     <div class="d-flex flex-column gap-3" style="max-width: 800px;">
-
+        @for (sentRequest of this.state.sentFriendRequests(); track sentRequest.id) {
         <!-- Sent Request Card -->
         <div class="d-flex align-items-center p-3 rounded-4 border border-secondary border-opacity-25 shadow-sm"
             style="background-color: #313131;">
 
-            <!-- Avatar -->
-            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-dark me-3"
+            <!-- Avatar with Image Check -->
+            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-dark me-3 overflow-hidden"
                 style="width: 56px; height: 56px; background-color: #c8e6c9; font-size: 1.1rem;">
-                PK
+                @if (sentRequest.profilePicture) {
+                <img [src]="getImageUrl(sentRequest.profilePicture)" [alt]="sentRequest.userName"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                } @else {
+                {{ sentRequest.userName.charAt(0) }}
+                }
             </div>
 
             <!-- User Info -->
@@ -74,24 +79,20 @@
 
             <!-- Actions Area -->
             <div class="d-flex align-items-center gap-3 ms-3">
-                <!-- Pending Badge -->
                 <span
                     class="badge rounded-pill px-3 py-2 bg-dark text-secondary fw-normal border border-secondary border-opacity-25"
                     style="background-color: #1e1e1e !important; font-size: 0.85rem;">
                     Pending
                 </span>
-
-                <!-- Cancel Button -->
                 <button class="btn btn-outline-secondary text-white rounded-3 px-4 py-2 border-opacity-50"
                     style="font-size: 0.9rem; min-width: 100px;" (click)="cancelSentRequest(sentRequest.id)">
                     Cancel
                 </button>
             </div>
         </div>
+        } @empty {
+        <h1 class="text-danger">No Sent Requests Found.</h1>
+        }
     </div>
-    <br />
-    } @empty {
-    <h1 class="text-danger">No Sent Requests Found.</h1>
-    }
     }
 </div>

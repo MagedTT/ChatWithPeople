@@ -1,16 +1,16 @@
 <div class="p-4 bg-dark text-white min-vh-100" style="background-color: #141414 !important;">
     <div class="mb-4">
         <h2 class="fw-bold mb-1">My friends</h2>
-        <p class="text-secondary">You have 24 friends</p>
+        <p class="text-secondary">You have {{ state.friendsCountComputed() }} friends</p>
     </div>
 
     <div class="row">
-        <app-filter-friends></app-filter-friends>
+        <app-filter-friends (sendSearchTerm)="searchForFriends($event)"></app-filter-friends>
     </div>
 
-    @for (i of [1, 2]; track i;) {
+    @for (friend of state.friends(); track friend.friendId;) {
     <div class="row m-3">
-        <app-friend-card></app-friend-card>
+        <app-friend-card [friend]="friend" (friendIdToRemove)="unfriend($event)"></app-friend-card>
     </div>
     }
 </div>

@@ -15,9 +15,11 @@ public class MappingProfile : Profile
             .ForMember(userDto => userDto.ProfilePicture, options => options.MapFrom(user => user.ProfilePicture != null ? Convert.ToBase64String(user.ProfilePicture) : ""));
 
         CreateMap<User, UserMinimalInformationDto>()
+            .ForMember(userDto => userDto.UserStatus, options => options.MapFrom(user => user.Status))
             .ForMember(userDto => userDto.ProfilePicture, options => options.MapFrom(user => user.ProfilePicture != null ? Convert.ToBase64String(user.ProfilePicture) : ""));
 
         CreateMap<Friendship, FriendshipsDto>();
+        CreateMap<Friend, FriendDto>();
 
         CreateMap<Entities.Models.FriendRequestDto, Shared.DTOs.FriendRequestDto>();
 
