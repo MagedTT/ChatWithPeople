@@ -21,6 +21,11 @@ public class UsersController : ControllerBase
         => Ok(await _serviceManager.UserService.GetUserByIdAsync(userId, trackChanges: false));
 
     [HttpGet]
+    [Route("ProfilePicture/{userId:guid}")]
+    public async Task<IActionResult> GetProfilePicture(Guid userId)
+        => Ok(new { ProfilePicture = await _serviceManager.UserService.GetProfilePictureByUserIdAsync(userId) });
+
+    [HttpGet]
     public async Task<IActionResult> GetAllUsers([FromQuery] UserParameters userParameters)
     {
         (IEnumerable<UserDto> users, MetaData metaData) = await _serviceManager.UserService.GetAllUsersAsync(userParameters: userParameters, trackChanges: false);

@@ -38,5 +38,7 @@ public class MappingProfile : Profile
         CreateMap<MessageForCreationDto, Message>();
         CreateMap<ConversationParticipant, ConversationParticipantDto>();
         CreateMap<Conversation, ConversationDto>();
+
+        CreateMap<FriendWithLastSentMessage, FriendWithLastSentMessageDto>();
     }
 }

@@ -11,5 +11,6 @@ public interface IFriendshipsService
     Task<IEnumerable<UserMinimalInformationDto>> GetFriendsMinimalInformationByUserIdAsync(Guid userId, bool trackChanges);
     Task<IEnumerable<UserMinimalInformationDto>> GetFriendsWithMinimalInformationByUserIdAsync(Guid userId, bool trackChanges);
     Task<int> GetTotalFriendsCountByUserIdAsync(Guid userId);
+    Task<IEnumerable<FriendWithLastSentMessageDto>> GetFriendsWithLastMessageByUserIdAsync(Guid userId, string? searchTerm);
     Task DeleteFriendshipByUsersIds(Guid user1Id, Guid user2Id, bool trackChanges);
 }

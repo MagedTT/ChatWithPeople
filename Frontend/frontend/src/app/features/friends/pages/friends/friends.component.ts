@@ -24,7 +24,7 @@ export class FriendsComponent implements OnInit {
   }
 
   searchForFriends(searchString: string) {
-    console.log(`Search Stringgggg: ${searchString}`);
+    // console.log(`Search Stringgggg: ${searchString}`);
     this.friendsService.getFriendsByUserId(this.currentUserId(), searchString);
   }
 

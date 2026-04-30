@@ -7,6 +7,7 @@ namespace Contracts;
 public interface IUserRepository
 {
     Task<User?> GetUserByIdAsync(Guid userId, bool trackChanges);
+    Task<string?> GetProfilePictureByUserIdAsync(Guid userId);
     Task<PagedList<User>> GetAllUsersWithInterestsAsync(UserParameters userParameters, bool trackChanges);
     Task<PagedList<User>> GetAllUsersForDiscoverWithInterestsAsync(Guid userId, UserParameters userParameters, bool trackChanges);
     Task<User?> GetUserWithUserInterestsByIdAsync(Guid userId, bool trackChanges);

@@ -9,32 +9,55 @@
                 style="background-color: #313131;">
                 <span class="bg-transparent border-0 text-secondary d-flex align-items-center"><i
                         class="bi bi-search"></i></span>
-                <input type="text" class="form-control bg-transparent border-0 text-white shadow-none"
-                    placeholder="Search chats...">
+                <input type="text" [(ngModel)]="searchTerm"
+                    class="form-control bg-transparent border-0 text-white shadow-none" placeholder="Search chats..."
+                    (keydown.enter)="getFriendsWithLastSentMessage(searchTerm)">
             </div>
         </div>
 
-        <div class="flex-grow-1 overflow-auto">
+        <div class="flex-grow-1 overflow-auto" style="background-color: #1e1e1e;">
             <div class="list-group list-group-flush">
-                <a href="#"
-                    class="list-group-item list-group-item-action bg-secondary bg-opacity-10 border-0 p-3 text-white">
+                @for (friendWithLastSentMessage of friendsWithLastSentMessage(); track
+                friendWithLastSentMessage.friendId) {
+                <button (click)="navigateToConversation(friendWithLastSentMessage.friendId)"
+                    class="list-group-item list-group-item-action bg-transparent border-bottom border-secondary border-opacity-10 p-3 text-white">
                     <div class="d-flex align-items-center">
                         <div class="position-relative me-3">
-                            <div class="rounded-circle bg-info text-dark d-flex align-items-center justify-content-center fw-bold"
-                                style="width: 48px; height: 48px;">LM</div>
+                            <div class="rounded-circle bg-info text-dark d-flex align-items-center justify-content-center fw-bold overflow-hidden"
+                                style="width: 48px; height: 48px;">
+
+                                @if (friendWithLastSentMessage.profilePicture) {
+                                <img [src]="getImageUrl(friendWithLastSentMessage.profilePicture)"
+                                    [alt]="friendWithLastSentMessage.userName"
+                                    style="width: 100%; height: 100%; object-fit: cover;">
+                                } @else {
+                                {{ friendWithLastSentMessage.userName.charAt(0) }}
+                                }
+                            </div>
+
                             <span
-                                class="position-absolute bottom-0 end-0 border border-2 border-dark rounded-circle bg-success p-1"></span>
+                                class="position-absolute bottom-0 end-0 border border-2 border-dark rounded-circle p-1"
+                                [class.bg-success]="friendWithLastSentMessage.userStatus === 1"
+                                [class.bg-danger]="friendWithLastSentMessage.userStatus !== 1"
+                                style="width: 14px; height: 14px;">
+                            </span>
                         </div>
+
                         <div class="flex-grow-1 overflow-hidden">
                             <div class="d-flex justify-content-between">
-                                <h6 class="mb-0 fw-bold">Lena Müller</h6><small class="text-secondary">2m</small>
+                                <h6 class="mb-0 fw-bold">{{ friendWithLastSentMessage.userName }}</h6>
+                                <small class="text-secondary">{{ friendWithLastSentMessage.lastActive }}</small>
                             </div>
-                            <small class="text-secondary text-truncate d-block">See you at the airport! ✈️</small>
+                            <small class="text-secondary text-truncate d-block">
+                                {{ friendWithLastSentMessage.lastSentMessage }}
+                            </small>
                         </div>
                     </div>
-                </a>
+                </button>
+                }
             </div>
         </div>
+
     </aside>
 
     <!-- 2. Main Chat Window -->
@@ -83,7 +106,7 @@
             <div class="mt-auto"></div>
 
             @for (message of messages(); track message) {
-            @if (message.senderId === this.currentUserId) {
+            @if (message.senderId === this.currentUserId()) {
             <app-sent-message [message]="message"></app-sent-message>
             } @else if (message.senderId === this.friendId) {
             <app-received-message [message]="message"></app-received-message>
@@ -97,10 +120,11 @@
                 style="background-color: #313131;">
                 <button class="btn border-0 text-secondary"><i class="bi bi-plus-lg"></i></button>
                 <input type="text" class="form-control bg-transparent border-0 text-white shadow-none"
-                    placeholder="Type a message...">
+                    placeholder="Type a message..." [(ngModel)]="messageContent"
+                    (keydown.enter)="sentMessage(messageContent)">
                 <button class="btn border-0 text-secondary"><i class="bi bi-emoji-smile"></i></button>
                 <button class="btn btn-primary rounded-circle ms-2 d-flex align-items-center justify-content-center"
-                    style="width: 40px; height: 40px;">
+                    style="width: 40px; height: 40px;" (click)="sentMessage(messageContent)">
                     <svg xmlns="http://w3.org" width="40" height="40" viewBox="0 0 24 24" fill="none">
                         <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="#FFFFFF" />
                     </svg>

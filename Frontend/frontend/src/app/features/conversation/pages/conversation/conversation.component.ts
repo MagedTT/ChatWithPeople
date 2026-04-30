@@ -3,26 +3,32 @@ import { ReceivedMessageComponent } from '../../components/received-message/rece
 import { SentMessageComponent } from '../../components/sent-message/sent-message.component';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ConversationDto, ConversationService } from '../../services/conversation.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageSignalRService } from '../../../../core/services/message-signal-r.service';
 import { MessageService } from '../../../../core/services/message.service';
 import { Subscription } from 'rxjs';
 import { MessageDto } from '../../../../shared/models/MessageDto';
 import { UserService } from '../../../../core/services/user.service';
 import { UserDto } from '../../../../shared/models/UserDto';
+import { FormsModule } from '@angular/forms';
+import { MessageForCreateionDto } from '../../../../shared/models/MessageForCreationDto';
+import { FriendWithLastSentMessage } from '../../../../shared/models/FriendWithLastSentMessage';
 
 @Component({
   selector: 'app-conversation',
-  imports: [ReceivedMessageComponent, SentMessageComponent],
+  imports: [ReceivedMessageComponent, SentMessageComponent, FormsModule],
   templateUrl: './conversation.component.html',
   styleUrl: './conversation.component.css'
 })
 export class ConversationComponent implements OnInit, AfterViewChecked, OnDestroy {
   friendId: string = '';
-  currentUserId: string | null = null;
+  currentUserId = signal<string | null>(null);
   conversation: ConversationDto | null = null;
   messages = signal<MessageDto[]>([]);
   friend: UserDto | null = null;
+  messageContent: string = '';
+  searchTerm: string = '';
+  friendsWithLastSentMessage = signal<FriendWithLastSentMessage[]>([]);
 
   private subs = new Subscription();
 
@@ -45,25 +51,24 @@ export class ConversationComponent implements OnInit, AfterViewChecked, OnDestro
     private activeRoute: ActivatedRoute,
     private messageSignalRService: MessageSignalRService,
     private userService: UserService,
-    private messageService: MessageService) {
-
-
+    private messageService: MessageService,
+    private router: Router) {
     effect(() => {
       this.messages();
       setTimeout(() => this.scrollToBottom(), 0);
     });
 
     this.activeRoute.params.subscribe(params => this.friendId = params['id']);
-    this.currentUserId = this.authService.currentUserId();
+    this.currentUserId.set(this.authService.currentUserId());
   }
 
   async ngOnInit(): Promise<void> {
     this.userService.getUserById(this.friendId).subscribe(result => {
       this.friend = result;
-      console.log("this.friend", this.friend);
+      // console.log("this.friend", this.friend);
     })
 
-    this.conversationService.getOrCreateConversation(this.currentUserId, this.friendId).then(result => {
+    this.conversationService.getOrCreateConversation(this.currentUserId(), this.friendId).then(result => {
       this.conversation = result;
       this.loadMessages();
     });
@@ -79,6 +84,8 @@ export class ConversationComponent implements OnInit, AfterViewChecked, OnDestro
         );
       })
     );
+
+    this.getFriendsWithLastSentMessage(null);
   }
 
   loadMessages() {
@@ -111,9 +118,32 @@ export class ConversationComponent implements OnInit, AfterViewChecked, OnDestro
     }
   }
 
+  sentMessage(message: string) {
+    const messageForCreate: MessageForCreateionDto = {
+      senderId: this.currentUserId()!,
+      content: message
+    }
+    this.messageService.createMessage(this.conversation?.id!, messageForCreate).subscribe(result => {
+      console.log(this.messages().values)
+      this.messages.update(prev => [...prev, result]);
+      this.messageContent = '';
+    });
+  }
+
+  getFriendsWithLastSentMessage(searchTerm: string | null) {
+    this.conversationService.getFriendswithLastSentMessage(this.currentUserId(), searchTerm).subscribe((result => {
+      this.friendsWithLastSentMessage.set(result);
+      this.searchTerm = '';
+    }));
+  }
+
   getImageUrl(base64: string | null | undefined): string {
     if (!base64) return 'assets/default.png';
     return `data:image/png;base64,${base64}`;
+  }
+
+  navigateToConversation(friendId: string) {
+    this.router.navigate(['conversation', friendId]);
   }
 
   async ngOnDestroy(): Promise<void> {

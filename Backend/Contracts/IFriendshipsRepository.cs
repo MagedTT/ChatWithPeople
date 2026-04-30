@@ -12,6 +12,7 @@ public interface IFriendshipsRepository
     Task<IEnumerable<User>> GetFriendsMinimalInformationByUserIdAsync(Guid userId, bool trackChanges);
     Task<int> GetTotalFriendsCountByUserIdAsync(Guid userId);
     Task<PagedList<Friend>> GetAllFriendsByUserIdAsync(Guid userId, FriendshipsParameters friendshipParameters, bool trackChanges);
+    Task<IEnumerable<FriendWithLastSentMessage>> GetFriendsWithLastMessageByUserIdAsync(Guid userId, string? searchTerm);
     void CreateFriendship(Friendship friendship);
     void DeleteFriendship(Friendship friendship);
 }

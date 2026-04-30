@@ -10,4 +10,9 @@ import { FormsModule } from '@angular/forms';
 export class FilterFriendsComponent {
   @Output() sendSearchTerm = new EventEmitter<string>();
   searchTerm: string = '';
+
+  sendSearchTermToParent(searchTerm: string) {
+    this.sendSearchTerm.emit(searchTerm);
+    this.searchTerm = '';
+  }
 }

@@ -1,5 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 using Contracts;
+using Entities.Enums;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Utilities;
@@ -54,6 +55,46 @@ public class FriendshipsRepository : RepositoryBase<Friendship>, IFriendshipsRep
 
         return friends;
     }
+
+    public async Task<IEnumerable<FriendWithLastSentMessage>> GetFriendsWithLastMessageByUserIdAsync(Guid userId, string? searchTerm)
+    {
+        IEnumerable<FriendWithLastSentMessage> friendWithLastSentMessages = _context.ConversationParticipants
+        .Where(cp => cp.UserId == userId)
+        .Select(cp => cp.Conversation)
+        .Where(c => c.Type == ConversationType.Private)
+        .Select(c => new
+        {
+            Conversation = c,
+            Friend = c.ConversationParticipants
+                .Where(p => p.UserId != userId)
+                .Select(p => p.User)
+                .FirstOrDefault()
+        })
+        .Where(x =>
+            x.Friend != null &&
+            !x.Friend.IsDeleted &&
+            (searchTerm == null || x.Friend.UserName!.ToLower().Contains(searchTerm.ToLower()))
+        )
+        .Select(x => new FriendWithLastSentMessage
+        {
+            FriendId = x.Friend!.Id,
+            UserName = x.Friend.UserName!,
+            UserStatus = x.Friend.Status,
+            ProfilePicture = x.Friend.ProfilePicture != null
+                ? Convert.ToBase64String(x.Friend.ProfilePicture)
+                : "",
+            LastActive = x.Friend.LastSeen,
+
+            LastSentMessage = x.Conversation.Messages
+                .Where(m => !m.IsDeleted)
+                .OrderByDescending(m => m.CreatedAt)
+                .Select(m => m.Content)
+                .FirstOrDefault()
+        }).AsNoTracking();
+
+        return friendWithLastSentMessages;
+    }
+
 
     public async Task<Friendship?> GetFriendshipByUser1IdAndUser2IdAsync(Guid user1Id, Guid user2Id, bool trackChanges)
         => await FindByCondition(x => x.User1Id.Equals(user1Id) && x.User2Id.Equals(user2Id), trackChanges).FirstOrDefaultAsync();

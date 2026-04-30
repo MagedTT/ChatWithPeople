@@ -57,4 +57,7 @@ public class UserService : IUserService
 
         return (usersForDiscoverDto: usersForDiscoverDtos, metaData: usersWithMetaData.MetaData);
     }
+
+    public async Task<string?> GetProfilePictureByUserIdAsync(Guid userId)
+        => await _repositoryManager.UserRepository.GetProfilePictureByUserIdAsync(userId);
 }

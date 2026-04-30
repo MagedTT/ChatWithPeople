@@ -28,10 +28,15 @@ public class FriendshipsController : ControllerBase
 
     [HttpGet]
     [Route("TotalFriendsCount/{userId:guid}")]
-    public async Task<IActionResult> GetFriendships(Guid userId)
+    public async Task<IActionResult> GetTotalFriendshipsCount(Guid userId)
     {
         return Ok(await _serviceManager.FriendshipsService.GetTotalFriendsCountByUserIdAsync(userId));
     }
+
+    [HttpGet]
+    [Route("FriendsWithLastSentMessage/{userId:guid}")]
+    public async Task<IActionResult> GetFriendsWithLastSentMessage(Guid userId, [FromQuery] string? searchTerm)
+        => Ok(await _serviceManager.FriendshipsService.GetFriendsWithLastMessageByUserIdAsync(userId, searchTerm));
 
     [HttpGet]
     [Route("OnlineFriends/{userId:guid}")]

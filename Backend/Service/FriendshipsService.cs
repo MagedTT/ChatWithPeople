@@ -103,6 +103,15 @@ public class FriendshipsService : IFriendshipsService
         return friendship;
     }
 
+    public async Task<IEnumerable<FriendWithLastSentMessageDto>> GetFriendsWithLastMessageByUserIdAsync(Guid userId, string? searchTerm)
+    {
+        IEnumerable<FriendWithLastSentMessage> friendWithLastSentMessages = await _repositoryManager.FriendshipsRepository.GetFriendsWithLastMessageByUserIdAsync(userId, searchTerm);
+
+        IEnumerable<FriendWithLastSentMessageDto> friendWithLastSentMessagesDto = _mapper.Map<IEnumerable<FriendWithLastSentMessageDto>>(friendWithLastSentMessages);
+
+        return friendWithLastSentMessagesDto;
+    }
+
     public async Task<IEnumerable<UserMinimalInformationDto>> GetFriendsWithMinimalInformationByUserIdAsync(Guid userId, bool trackChanges)
     {
         IEnumerable<Friendship> friendships = await _repositoryManager.FriendshipsRepository.GetFriendUsersMinimalInformation(userId, trackChanges);

@@ -15,6 +15,17 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
     public async Task<User?> GetUserByIdAsync(Guid userId, bool trackChanges)
         => await FindByCondition(x => x.Id.Equals(userId), trackChanges).FirstOrDefaultAsync();
 
+    public Task<PagedList<User>> GetAllUsersWithInterestsAsync(UserParameters userParameters, bool trackChanges)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<User?> GetUserWithUserInterestsByIdAsync(Guid userId, bool trackChanges)
+        => await FindByCondition(x => x.Id == userId, trackChanges).Include(x => x.UserInterests).FirstOrDefaultAsync();
+
+    public async Task<string?> GetProfilePictureByUserIdAsync(Guid userId)
+        => await _context.Users.Where(x => x.Id.Equals(userId)).Select(x => x.ProfilePicture != null ? Convert.ToBase64String(x.ProfilePicture) : "").FirstOrDefaultAsync();
+
     public async Task<PagedList<User>> GetAllUsersAsync(UserParameters userParameters, bool trackChanges)
     {
         List<User> users =
@@ -41,12 +52,4 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
 
         return new PagedList<User>(users, count, userParameters.PageNumber, userParameters.PageSize);
     }
-
-    public Task<PagedList<User>> GetAllUsersWithInterestsAsync(UserParameters userParameters, bool trackChanges)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<User?> GetUserWithUserInterestsByIdAsync(Guid userId, bool trackChanges)
-        => await FindByCondition(x => x.Id == userId, trackChanges).Include(x => x.UserInterests).FirstOrDefaultAsync();
 }
