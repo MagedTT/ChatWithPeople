@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { FriendMinimalInformation } from '../../models/FriendMinimalInformation';
@@ -19,7 +19,8 @@ export class SidebarComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     public state: StateService,
-    private friendsService: FriendsService
+    private friendsService: FriendsService,
+    private router: Router
   ) {
     this.currentUesrId.set(this.authService.currentUserId());
   }
@@ -32,6 +33,10 @@ export class SidebarComponent implements OnInit {
     this.friendsService.getTotalFriendsCount(this.currentUesrId());
 
     this.userService.getFriendRequestsTotalCountByUserId(this.currentUesrId());
+  }
+
+  navigateToConversation(friendId: string) {
+    this.router.navigate(['conversation', friendId]);
   }
 
   getImageUrl(base64: string | null | undefined): string {
